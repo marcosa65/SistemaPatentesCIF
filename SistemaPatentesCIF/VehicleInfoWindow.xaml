@@ -1,0 +1,158 @@
+﻿<Window x:Class="SistemaPatentesCIF.VehicleInfoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
+        Title="Detalle del Vehículo"
+        Height="550"
+        Width="700"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="#111827"
+        Loaded="Window_Loaded">
+
+    <Window.Resources>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="WhiteSmoke"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#4B5563"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid Margin="15">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- IMAGEN -->
+
+        <Border Grid.Column="0"
+                BorderBrush="CadetBlue"
+                BorderThickness="2"
+                Margin="5">
+
+            <Image x:Name="ImgVehicle"
+                   Stretch="UniformToFill"
+                   Height="300"
+                   VerticalAlignment="Top">
+                <Image.Source>
+                        <Binding Path="images/img_default" TargetNullValue="pack://application:,,,/Imagenes/default.png" FallbackValue="pack://application:,,,/Imagenes/default.png"/>
+                </Image.Source> 
+            </Image>
+           
+        </Border>
+        <gmap:GMapControl x:Name="GMapControl"
+                          Height="200"
+                          Margin="5,250,5,0"
+                          VerticalAlignment="Bottom">
+
+        </gmap:GMapControl>
+
+        <!-- DATOS -->
+
+        <StackPanel Grid.Column="1"
+                    Margin="15,0,0,0">
+
+            <TextBlock Text="Detalle del Vehículo"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Margin="0,0,0,20"/>
+
+            <TextBlock Text="Patente"/>
+            <TextBlock x:Name="TxtPlate"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Foreground="LimeGreen"
+                       Margin="0,0,0,15"/>
+
+            <Separator Margin="0,5"/>
+
+            <Grid Margin="0,10">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Marca:" Grid.Row="0"/>
+                <TextBlock x:Name="TxtMake" 
+                           Grid.Row="0" 
+                           Grid.Column="1"
+                           Foreground="LimeGreen"/>
+
+                <TextBlock Text="Modelo:" Grid.Row="1"/>
+                <TextBlock x:Name="TxtModel" 
+                           Grid.Row="1" 
+                           Grid.Column="1"
+                           Foreground="LimeGreen"/>
+
+                <TextBlock Text="Año:" Grid.Row="2"/>
+                <TextBlock x:Name="TxtAnio"
+                           Grid.Row="2" 
+                           Grid.Column="1"
+                           Foreground="LimeGreen"
+                           Text="{Binding Year}"/>
+
+                <TextBlock Text="Formato Patente:" Grid.Row="3"/>
+                <TextBlock x:Name="TxtPlateFormat" 
+                           Grid.Row="3" 
+                           Grid.Column="1" 
+                           Foreground="LimeGreen"/>
+
+                <TextBlock Text="Tipo Vehículo:" Grid.Row="4"/>
+                <TextBlock x:Name="TxtVehicleKind" 
+                           Grid.Row="4" 
+                           Grid.Column="1"
+                           Foreground="LimeGreen"
+                           Text="{Binding Kind}"/>
+
+                <TextBlock Text="Provincia:" Grid.Row="5"/>
+                <TextBlock x:Name="TxtProvince" 
+                           Grid.Row="5" 
+                           Grid.Column="1"
+                           Foreground="LimeGreen"/>
+
+                <TextBlock Text="Ciudad:" Grid.Row="6"/>
+                <TextBlock x:Name="TxtCity" 
+                           Grid.Row="6" 
+                           Grid.Column="1"
+                           Foreground="LimeGreen"/>
+            </Grid>
+
+            <Separator Margin="0,10"/>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+
+                <Button Content="📄 Generar Informe"
+                        Width="150"/>
+
+                <Button Content="Cerrar"
+                        Width="120"
+                        Click="Cerrar_Click"/>
+            </StackPanel>
+
+        </StackPanel>
+
+    </Grid>
+</Window>
