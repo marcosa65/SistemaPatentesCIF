@@ -130,7 +130,7 @@ namespace SistemaPatentesCIF
                 Debug.Print($"Geocoding status: {status}, Position: {pos?.Lat}, {pos?.Lng}");
                 if (status == GeoCoderStatusCode.OK && pos.HasValue)
                 {
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    Dispatcher.BeginInvoke(new Action(() =>
                     {
                         // 1. Definir los límites de zoom que se le permiten al control
                         GMapControl.MinZoom = 2;

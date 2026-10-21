@@ -1,16 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
-using System.Text;
-using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using SistemaPatentesCIF.AlprLab;
@@ -22,7 +15,7 @@ namespace SistemaPatentesCIF
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     ///
-    public partial class MainWindow : Window
+    public partial class ALPRDetectionWindow : Window
     {
         /// <summary>
         /// propiedades de la clase MainWindow
@@ -57,14 +50,14 @@ namespace SistemaPatentesCIF
             public double y2 { get; set; }
         }
 
-        // Constructor de la clase MainWindow
-        public MainWindow()
+        // Constructor de la clase ALPRDetectionWindow
+        public ALPRDetectionWindow()
         {
             InitializeComponent();
             PlateDataGrid.ItemsSource = PlateDataCollection;
         }
 
-        // metodos de la clase MainWindow
+        // metodos de la clase ALPRDetectionWindow
         // carga de imagen y procesamiento de la detección de placas
         private async void CargarImagen_Click(object sender, RoutedEventArgs e)
         {

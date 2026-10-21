@@ -39,21 +39,16 @@
         <Border Grid.Column="0"
                 BorderBrush="CadetBlue"
                 BorderThickness="2"
-                Margin="5">
+                Height="285"
+                VerticalAlignment="Top">
 
             <Image x:Name="ImgVehicle"
                    Stretch="UniformToFill"
-                   Height="300"
-                   VerticalAlignment="Top">
-                <Image.Source>
-                        <Binding Path="images/img_default" TargetNullValue="pack://application:,,,/Imagenes/default.png" FallbackValue="pack://application:,,,/Imagenes/default.png"/>
-                </Image.Source> 
-            </Image>
-           
+                   />
+
         </Border>
         <gmap:GMapControl x:Name="GMapControl"
-                          Height="200"
-                          Margin="5,250,5,0"
+                          Height="198"
                           VerticalAlignment="Bottom">
 
         </gmap:GMapControl>

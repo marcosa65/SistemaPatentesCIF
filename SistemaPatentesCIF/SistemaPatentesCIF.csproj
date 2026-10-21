@@ -12,6 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\cif_logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="GMap.NET.WinPresentation" Version="2.1.7" />
     <PackageReference Include="pythonnet" Version="3.2.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.1" />
@@ -29,7 +33,9 @@
 	</None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="images\" />
+    <Resource Include="images\cif_logo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <!-- Do not force-copy a local runtimes file (let NuGet/MSBuild supply native SQLite.Interop from the package) -->
