@@ -29,10 +29,10 @@ namespace SistemaPatentesCIF
             historyWindow.Show();
         }
 
-        private void ALPRDetectionButton_Click(object sender, RoutedEventArgs e)
+        private void DetectionButton_Click(object sender, RoutedEventArgs e)
         {
-            ALPRDetectionWindow alprDetectionWindow = new ALPRDetectionWindow();
-            alprDetectionWindow.Show();
+            DetectionWindow DetectionWindow = new DetectionWindow();
+            DetectionWindow.Show();
         }
         private void IntelligenceButton_Click(object sender, RoutedEventArgs e)
         {

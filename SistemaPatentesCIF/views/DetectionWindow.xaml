@@ -1,0 +1,412 @@
+﻿<Window x:Class="SistemaPatentesCIF.views.DetectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SistemaPatentesCIF.views"
+        mc:Ignorable="d"
+        Title="Detección de Patentes" 
+        Height="820" 
+        Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#1E1E1E">
+
+    <!-- RECURSOS EXCLUSIVOS DE ESTA VENTANA -->
+    <Window.Resources>
+       
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
+        </Style>
+
+    </Window.Resources>
+
+    <!-- GRID PRINCIPAL -->
+    <Grid Margin="10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- CABECERA -->
+
+        <Border 
+            Grid.Row="0"
+            Style="{StaticResource DashboardBorderStyle}"
+            Padding="15"
+            Margin="0,0,0,15">
+
+            <StackPanel>
+
+                <TextBlock Text="📷 DETECCIÓN DE PATENTES"
+                       FontSize="32"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       HorizontalAlignment="Center"/>
+
+                <TextBlock Text="Procesamiento de Imágenes y Video"
+                       Foreground="#B0B0B0"
+                       HorizontalAlignment="Center"
+                       Margin="0,8,0,0"/>
+
+            </StackPanel>
+
+        </Border>
+
+        <!-- CONTENIDO -->
+
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.2*"/>
+                <ColumnDefinition Width="0.9*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ===================== -->
+            <!-- PANEL IZQUIERDO -->
+            <!-- ===================== -->
+
+            <Grid Grid.Column="0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- TITULO -->
+
+                <Border 
+                    Grid.Row="0"
+                    Style="{StaticResource DashboardBorderStyle}"
+                    Margin="0,0,10,10">
+
+                    <TextBlock Text="🖼 VISTA PREVIA"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
+                </Border>
+                
+                <Border 
+                    Grid.Row="1"
+                    Style="{StaticResource DashboardBorderStyle}"                       
+                    Height="60"
+                    Margin="0,0,10,10">
+
+                    <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                        
+                        <!-- BOTONES ACTUALES -->
+                        <Button
+                            Content="📂 Cargar Imagen"
+                            Style="{StaticResource DashboardButtonStyle}"
+                            Margin="0"
+                            Width="150"
+                            Height="60"
+                            VerticalAlignment="Center"
+                            Click="LoadImageButton_Click"/>
+
+                        <Button 
+                            Content="⏻ Salir" 
+                            Style="{StaticResource DashboardButtonStyle}"
+                            Margin="0" 
+                            Width="120"
+                            Height="60"
+                            VerticalAlignment="Center"
+                            Click="ExitButton_Click"/>
+                    
+                    </StackPanel>
+
+                </Border>
+                <!-- IMAGEN -->
+
+                <Border Grid.Row="2"
+                    Background="#1A1A1A"
+                    BorderBrush="#303030"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Padding="5"
+                    Margin="0,0,10,10"
+                    Height="400">
+
+                    <Grid>
+
+                        <!-- LA IMAGEN CARGADA -->
+                        <Image x:Name="imgPreview" 
+                               Stretch="Uniform" 
+                               Opacity="10"
+                               
+                        />
+                        <!-- EL OVERLAYCANVAS -->
+                        <Canvas x:Name="overlayCanvas" 
+                                IsHitTestVisible="False"
+                                
+                        />
+                          
+                    </Grid>
+
+                </Border>
+
+                <!-- ACCIONES -->
+
+                <Border 
+                    Grid.Row="3"
+                    Style="{StaticResource DashboardBorderStyle}"
+                    Margin="0,0,10,0">
+
+                    <StackPanel>
+
+                        <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+
+                            <!-- GUARDAR -->
+                            <Button
+                                Content="💾 Guardar Resultados"
+                                Width="200"
+                                Height="60"
+                                HorizontalAlignment="Center"
+                                Style="{StaticResource DashboardButtonStyle}"
+                            />
+
+                            <!-- LIMPIAR -->
+                            <Button
+                                Content="🗑️ Limpiar Resultados"
+                                Width="200"
+                                Height="60" 
+                                HorizontalAlignment="Center"
+                                Style="{StaticResource DashboardButtonStyle}"
+                                Click="CleanButton_Click"
+                            />
+
+                        </StackPanel>
+
+                        <TextBlock
+                            Text="© 2026 Sistema de Patentes CIF&#10;Centro de Investigaciones Forenses&#10;Todos los derechos reservados"
+                            FontSize="12"
+                            Foreground="#B0B0B0"
+                            TextAlignment="Center"
+                            Margin="0,0,0,0"/>
+
+                    </StackPanel>
+
+                </Border>
+
+            </Grid>
+
+            <!-- ===================== -->
+            <!-- PANEL DERECHO -->
+            <!-- ===================== -->
+
+            <Grid Grid.Column="1">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- RESULTADO OCR -->
+
+                <Border 
+                    Grid.Row="0"
+                    Style="{StaticResource DashboardBorderStyle}">
+
+                    <StackPanel>
+
+                        <TextBlock Text="👁 RESULTADO OCR"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,10"/>
+
+                        <!-- TODOS TUS CONTROLES ACTUALES -->
+                        
+                            <TextBlock 
+                                Text="Placa Detectada:" 
+                                FontWeight="Bold" FontSize="18" />
+                            <TextBlock
+                                x:Name="TxtDetectedPlate"
+                                Text="-"
+                                FontSize="40"
+                                FontWeight="Bold"
+                                Foreground="Green"
+                                Margin="0,5,0,15"
+                            />
+                            <Line X1="0" Y1="0" X2="400" Y2="0" Stroke="Gray" 
+                                  StrokeThickness="2" 
+                                  Margin="0,0,0,15"
+                            />
+                            <TextBlock x:Name="TxtConfidencePlate" Text="Confianza: -" Margin="0,0,0,15" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    x:Name="PaisDetectado"
+                                    Text="País: -"
+                                    Margin="0,0,0,15"
+                                    VerticalAlignment="Center"
+                                />
+                                <TextBlock x:Name="ConfianzaPais" Text="Confianza País: -" Margin="40,0,0,15" />
+                            </StackPanel>
+                    
+                    </StackPanel>
+
+                </Border>
+
+                <!-- HISTORIAL -->
+
+                <Border 
+                    Grid.Row="1"
+                    Style="{StaticResource DashboardBorderStyle}">
+                    
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <!-- EL TEXTO CENTRAL -->
+                        <TextBlock Text="📚 HISTORIAL DE LECTURAS"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,10"/>
+                        <TextBlock Text="Últimas Detecciones Procesadas"
+                               Foreground="#B0B0B0"
+                               HorizontalAlignment="Center" 
+                               Margin="0,30,0,10"/>
+                        <!-- OBJETO DATAGRID -->
+                        <DataGrid x:Name="PlateDataGrid"
+                               Background="#252526"
+                               Foreground="WhiteSmoke"
+                               RowBackground="#252526"
+                               AlternatingRowBackground="#35353A"
+                               HeadersVisibility="Column"
+                               GridLinesVisibility="None"
+                               BorderBrush="#303030"
+                               BorderThickness="1"
+                               SelectedCellsChanged="PlateDataGrid_SelectedCellsChanged"
+                               IsReadOnly="True"
+                               CanUserAddRows="False"
+                               CanUserDeleteRows="False"
+                               CanUserResizeRows="False"
+                               AutoGenerateColumns="False"
+                               Height="200"
+                               Margin="0,60,0,0"
+                        >
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background"
+                                        Value="#2D2D30" />
+                                    <Setter Property="Foreground"
+                                        Value="White" />
+                                    <Setter Property="FontWeight"
+                                        Value="SemiBold" />
+                                    <Setter Property="BorderBrush"
+                                        Value="#404040" />
+                                    <Setter Property="BorderThickness"
+                                        Value="0,0,1,1" />
+                                </Style>
+                            </DataGrid.ColumnHeaderStyle>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn 
+                                    Header="Hora" 
+                                    Binding="{Binding Hora}" 
+                                    
+                                    Width="1.2*" />
+                                <DataGridTextColumn Header="Placa" Binding="{Binding Placa}" Width="*" />
+                                <DataGridTextColumn
+                                        x:Name="DataConfidence"
+                                        Header="Confianza"
+                                        Binding="{Binding Confianza}"
+                                        Width="0.7*"
+                                />
+                                <DataGridTemplateColumn Header="Estado" Width="70">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <!-- El Background se enlaza (Binding) a la propiedad del objeto -->
+                                            <Border Background="{Binding ColorHex}" 
+                                                    Width="25" 
+                                                    Height="25" 
+                                                    CornerRadius="12.5"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                            />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                    </Grid>
+
+                </Border>
+
+                <!-- BOTONES INFERIORES -->
+
+                <Border Grid.Row="2"
+                    Style="{StaticResource DashboardBorderStyle}">
+
+                    <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+
+                        <!-- CONSULTAR INFO VEHICULAR -->
+                        <Button
+                            Content="▶ Consultar Info Vehicular"
+                            Width="180"
+                            Height="60"
+                            Style="{StaticResource DashboardButtonStyle}"
+                            Click="GetVehicleInfo_Click"
+                        />
+                        <!-- EXPORTAR CSV -->
+                        <Button 
+                            Content="📊 Exportar CSV"
+                            Width="160"
+                            Height="60"
+                            Style="{StaticResource DashboardButtonStyle}"
+                        />
+
+                    </StackPanel>
+
+                </Border>
+
+            </Grid>
+
+        </Grid>
+
+        <!-- ESTADO DEL SISTEMA -->
+
+        <Border 
+            Grid.Row="2"
+            Style="{StaticResource DashboardBorderStyle}"
+            Padding="10"
+            Margin="0,10,0,0">
+
+            <DockPanel>
+
+                <TextBlock x:Name="StatusBarReadyText"
+                       Text="Listo"
+                       Foreground="White"
+                       Margin="0,0,15,0"/>
+
+                <ProgressBar x:Name="OcrProgress"
+                         Width="220"
+                         Height="16"
+                         Background="#404040"/>
+
+                <TextBlock x:Name="StatusBarInfo"
+                       Text="Esperando acción..."
+                       Foreground="#B0B0B0"
+                       Margin="15,0,0,0"/>
+
+            </DockPanel>
+
+        </Border>
+
+    </Grid>
+    
+</Window>
