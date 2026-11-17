@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SistemaPatentesCIF
+namespace SistemaPatentesCIF.services
 {
     using System;
     using System.Diagnostics;

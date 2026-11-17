@@ -19,7 +19,6 @@ namespace SistemaPatentesCIF.views
         private ObservableCollection<PlateData> PlateDataCollection { get; set; } = new();
         public ALPRResult? DetectionResult { get; set; } = new();
         private BitmapImage? bmp;
-
         // Estructura de datos para bindear los resultados de la detección de placas en la tabla
         // Solo utilizable en el contexto de la UI, no es parte del modelo de datos principal.
         private struct PlateData
@@ -169,7 +168,6 @@ namespace SistemaPatentesCIF.views
             }
         }
 
-
         private async void LoadImageButton_Click(object sender, RoutedEventArgs e) 
         {
             Button? btn = (Button)sender;
@@ -198,7 +196,6 @@ namespace SistemaPatentesCIF.views
                 UpdateProgressbar(10, "Cargando imagen...");
                 // Pausa el procesamiento por 1 segundo (1000 milisegundos)
                 await Task.Delay(1000);
-
                 imgPreview.Source = bmp;
                 UpdateProgressbar(30, "Procesando imagen...");
                 await Task.Delay(500);
@@ -266,7 +263,6 @@ namespace SistemaPatentesCIF.views
             btn?.IsEnabled = true; // Habilita el botón después de procesar la imagen
         }
 
-
         private void UpdateProgressbar(double value, string message)
         {
             OcrProgress.Value = value;
@@ -277,6 +273,7 @@ namespace SistemaPatentesCIF.views
         {
             //this.Close();
         }
+
         private void CleanButton_Click( object sender, RoutedEventArgs e) 
         {
             // Vacía el origen de la imagen
@@ -333,6 +330,5 @@ namespace SistemaPatentesCIF.views
                 );
             }
         }
-
     }
 }
