@@ -20,7 +20,7 @@ namespace SistemaPatentesCIF.views
             DialogResult = true;
         }
 
-        private void BtnOpenFullMap_Click(object sender, RoutedEventArgs e)
+        private void BtnGenerateReport_Click(object sender, RoutedEventArgs e)
         {
 
         }

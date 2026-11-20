@@ -18,6 +18,7 @@ namespace SistemaPatentesCIF.views
             recordList = DataBaseManager.GetAllDetections();
             InjectMockVehicleDetails(recordList); // Inyecta detalles de vehículos simulados
             UpdateDataGridSource(recordList);
+            TxtTotalRecords.Text = $"Total de registros: {recordList.Count}";
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
@@ -125,7 +126,7 @@ namespace SistemaPatentesCIF.views
             };
 
             var random = new Random();
-            int itemsToPopulate = Math.Min(3, recordList.Count);
+            int itemsToPopulate = Math.Min(4, recordList.Count);
 
             // Selecciona índices aleatorios sin repetir
             var selectedIndices = Enumerable
