@@ -152,7 +152,7 @@ Las detecciones son almacenadas de forma persistente en SQLite para permitir aud
 ---
 
 ## Autor
-
+Mgter. Marcos A. Monti
 Desarrollado como plataforma de investigación y análisis vehicular para entornos forenses y de inteligencia.
 
 Poder Judicial de Formosa
