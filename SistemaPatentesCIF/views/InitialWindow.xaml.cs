@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using SistemaPatentesCIF.data;
+using SistemaPatentesCIF.themes;
 using SistemaPatentesCIF.views;
 
 namespace SistemaPatentesCIF
@@ -21,6 +13,22 @@ namespace SistemaPatentesCIF
         public InitialWindow()
         {
             InitializeComponent();
+            this.Loaded += Window_Loaded;
+            this.ContentRendered += Window_ContentRendered;
+        }
+
+        private void Window_ContentRendered(object? sender, EventArgs e)
+        {
+            // Código que se ejecuta cuando la ventana se ha renderizado completamente
+            LastDetectionTime.Text =
+                DataBaseManager.GetLastDetection()?.DetectionDate.ToString("g")
+                ?? "No hay detecciones";
+        }
+
+        private void Window_Loaded(object? sender, EventArgs e)
+        {
+            // Codigo que se ejecuta cuando la ventana se carga, previamente a que se renderice completamente
+            // Todos los controles (TextBox, DataGrid, etc.) ya están cargados
         }
 
         private void HistoryButton_Click(object sender, RoutedEventArgs e)
@@ -34,10 +42,23 @@ namespace SistemaPatentesCIF
             DetectionWindow DetectionWindow = new DetectionWindow();
             DetectionWindow.Show();
         }
+
         private void IntelligenceButton_Click(object sender, RoutedEventArgs e)
         {
             IntelligenceWindow intelligenceWindow = new IntelligenceWindow();
             intelligenceWindow.Show();
+        }
+
+        private void VehicleInfo_Click(object sender, RoutedEventArgs e)
+        {
+            VehicleInfoWindow vehicleInfoWindow = new VehicleInfoWindow();
+            vehicleInfoWindow.Show();
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow settingsWindow = new SettingsWindow();
+            settingsWindow.Show();
         }
     }
 }

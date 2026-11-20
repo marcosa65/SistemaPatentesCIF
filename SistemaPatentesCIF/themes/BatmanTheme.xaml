@@ -1,0 +1,17 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ==================== PALETA DE COLORES (BATMAN / DARK AMBER) ==================== -->
+    <SolidColorBrush x:Key="BgPrimaryBrush" Color="#0C0D12"/>
+    <SolidColorBrush x:Key="BgSecondaryBrush" Color="#15171E"/>
+    <SolidColorBrush x:Key="BgElevatedBrush" Color="#262934"/>
+
+    <SolidColorBrush x:Key="BorderSubtleBrush" Color="#262934"/>
+    <SolidColorBrush x:Key="AccentAmberBrush" Color="#F5B800"/>
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="#FFCA28"/>
+
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#8E93A4"/>
+    <SolidColorBrush x:Key="TextOnAccentBrush" Color="#0C0D12"/>
+
+</ResourceDictionary>

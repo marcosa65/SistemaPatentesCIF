@@ -1,13 +1,13 @@
-﻿using Microsoft.Win32;
-using SistemaPatentesCIF.AlprLab;
-using SistemaPatentesCIF.models;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.Win32;
+using SistemaPatentesCIF.AlprLab;
+using SistemaPatentesCIF.models;
 
 namespace SistemaPatentesCIF.views
 {
@@ -19,6 +19,7 @@ namespace SistemaPatentesCIF.views
         private ObservableCollection<PlateData> PlateDataCollection { get; set; } = new();
         public ALPRResult? DetectionResult { get; set; } = new();
         private BitmapImage? bmp;
+
         // Estructura de datos para bindear los resultados de la detección de placas en la tabla
         // Solo utilizable en el contexto de la UI, no es parte del modelo de datos principal.
         private struct PlateData
@@ -37,7 +38,7 @@ namespace SistemaPatentesCIF.views
             public double ScaleY { get; set; }
         }
 
-        private struct TransFormData 
+        private struct TransFormData
         {
             public double ScaleX { get; set; }
             public double ScaleY { get; set; }
@@ -82,33 +83,36 @@ namespace SistemaPatentesCIF.views
                 // Ajustada por ancho
                 displayedWidth = controlWidth;
                 displayedHeight = controlWidth / imageRatio;
-                offsetY =
-                    (controlHeight - displayedHeight) / 2;
+                offsetY = (controlHeight - displayedHeight) / 2;
             }
             else
             {
                 // Ajustada por alto
                 displayedHeight = controlHeight;
                 displayedWidth = controlHeight * imageRatio;
-                offsetX =
-                    (controlWidth - displayedWidth) / 2;
+                offsetX = (controlWidth - displayedWidth) / 2;
             }
 
             double scaleX = displayedWidth / imgWidth;
             double scaleY = displayedHeight / imgHeight;
 
             return new TransFormData
-            { 
-                ScaleX = scaleX, 
-                ScaleY = scaleY, 
-                OffsetX = offsetX, 
-                OffsetY = offsetY 
+            {
+                ScaleX = scaleX,
+                ScaleY = scaleY,
+                OffsetX = offsetX,
+                OffsetY = offsetY,
             };
-               
         }
 
         // Método para dibujar un rectángulo con texto alrededor de la placa detectada
-        private void DrawRectangle( double x1, double y1, double x2, double y2, string plateText = "")
+        private void DrawRectangle(
+            double x1,
+            double y1,
+            double x2,
+            double y2,
+            string plateText = ""
+        )
         {
             // Calcular la escala de la imagen para ajustar las coordenadas del rectángulo
             TransFormData transform = CalculateImageTransform();
@@ -168,7 +172,7 @@ namespace SistemaPatentesCIF.views
             }
         }
 
-        private async void LoadImageButton_Click(object sender, RoutedEventArgs e) 
+        private async void LoadImageButton_Click(object sender, RoutedEventArgs e)
         {
             Button? btn = (Button)sender;
             btn?.IsEnabled = false; // Deshabilita el botón mientras se procesa la imagen
@@ -222,17 +226,17 @@ namespace SistemaPatentesCIF.views
                             }
                         );
                         TxtDetectedPlate.Text = plate.Text;
-                        TxtConfidencePlate.Text = $"Confianza: " +
-                            $"{plate.Confidence:p0}";
+                        TxtConfidencePlate.Text = $"Confianza Placa: " + $"{plate.Confidence:p0}";
                         TxtConfidencePlate.Foreground = new SolidColorBrush(ColorHexVar);
                         PaisDetectado.Text = $"País: {plate.Region}";
-                        ConfianzaPais.Text = $"Confianza País: " +
-                            $"{plate.RegionConfidence:P0}";
-                        string rectangleText = $"{plate.Text} - " +
-                            $"{(plate.Confidence * 100):0}%\nReg:" +
-                            $"{plate.Region}" ?? "No detectada";
-                        // 
-                        DrawRectangle( plate.x1, plate.y1, plate.x2, plate.y2, rectangleText );
+                        ConfianzaPais.Text = $"Confianza País: " + $"{plate.RegionConfidence:P0}";
+                        string rectangleText =
+                            $"{plate.Text} - "
+                                + $"{(plate.Confidence * 100):0}%\nReg:"
+                                + $"{plate.Region}"
+                            ?? "No detectada";
+                        //
+                        DrawRectangle(plate.x1, plate.y1, plate.x2, plate.y2, rectangleText);
                     }
                     UpdateProgressbar(70, "Ejecutando  OCR...");
                     await Task.Delay(500);
@@ -274,28 +278,30 @@ namespace SistemaPatentesCIF.views
             //this.Close();
         }
 
-        private void CleanButton_Click( object sender, RoutedEventArgs e) 
+        private void CleanButton_Click(object sender, RoutedEventArgs e)
         {
             // Vacía el origen de la imagen
             imgPreview.Source = null;
             // Fuerza al motor de WPF a redibujar el control inmediatamente
             imgPreview.InvalidateVisual();
             TxtDetectedPlate.Text = "-";
-            TxtConfidencePlate.Text = "Confianza: -";
+            TxtConfidencePlate.Text = "Confianza Placa: -";
             TxtConfidencePlate.Foreground = new SolidColorBrush(Colors.White);
             PaisDetectado.Text = "País: -";
             ConfianzaPais.Text = "Confianza País: -";
             PlateDataCollection.Clear();
             overlayCanvas.Children.Clear();
-            
         }
 
-        private void PlateDataGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        private void PlateDataGrid_SelectedCellsChanged(
+            object sender,
+            SelectedCellsChangedEventArgs e
+        )
         {
             if (PlateDataGrid.SelectedItem is PlateData selectedPlate)
             {
                 TxtDetectedPlate.Text = selectedPlate.Placa;
-                TxtConfidencePlate.Text = $"Confianza: {selectedPlate.Confianza}";
+                TxtConfidencePlate.Text = $"Confianza Placa: {selectedPlate.Confianza}";
                 TxtConfidencePlate.Foreground = new SolidColorBrush(
                     (Color)ColorConverter.ConvertFromString(selectedPlate.ColorHex ?? "#FFFFFF")
                 );
@@ -312,7 +318,7 @@ namespace SistemaPatentesCIF.views
             {
                 // Crear una instancia de la ventana VehicleInfoWindow
                 VehicleInfoWindow? vehicleInfoWindow = new VehicleInfoWindow();
-                // Asignar la Placa detectada 
+                // Asignar la Placa detectada
                 vehicleInfoWindow?.PlateToLookup = selectedPlate.Placa ?? string.Empty;
                 // Asignar la imagen cargada a la propiedad vehicleImage de la ventana VehicleInfoWindow
                 vehicleInfoWindow?.vehicleImage = bmp;
@@ -329,6 +335,11 @@ namespace SistemaPatentesCIF.views
                     MessageBoxImage.Information
                 );
             }
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

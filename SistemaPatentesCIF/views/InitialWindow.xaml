@@ -1,326 +1,340 @@
-﻿<Window x:Class="SistemaPatentesCIF.InitialWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        Title="ALPR Control Center"
-        Height="820"
-        Width="900"
-        WindowStartupLocation="CenterScreen"
-        Background="#1E1E1E">
+﻿<Window
+  x:Class="SistemaPatentesCIF.InitialWindow"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:sys="clr-namespace:System;assembly=mscorlib"
+  Title="ALPR Control Center"
+  Height="820"
+  Width="960"
+  WindowStartupLocation="CenterScreen"
+  Style="{DynamicResource ModernDarkWindowStyle}"
+>
+  <Window.Resources>
+    <Thickness x:Key="DashBoardTitle">0,8,0,4</Thickness>
+    <Thickness x:Key="DashBoardDescription">12,0,12,4</Thickness>
+    <sys:Double x:Key="DashBoardLogoSize">42</sys:Double>
+  </Window.Resources>
 
-    <Window.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <!-- Barra Superior -->
+      <RowDefinition Height="Auto" />
+      <!-- Logo y Título -->
+      <RowDefinition Height="Auto" />
+      <!-- Barra de Estado -->
+      <RowDefinition Height="*" />
+      <!-- Módulos -->
+      <RowDefinition Height="Auto" />
+      <!-- Pie / Últimos eventos -->
+    </Grid.RowDefinitions>
 
-        <Thickness x:Key="DashBoardTitle">
-            0,5,0,5
-        </Thickness>
-        <Thickness x:Key="DashBoardDescription">
-            15,0,15,10
-        </Thickness>
-        <sys:Double x:Key="DashBoardLogoSize">
-            45
-        </sys:Double>
-
-    </Window.Resources>
-
-    <Grid Margin="10">
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="160"/>
-        </Grid.RowDefinitions>
-
-        <!-- ENCABEZADO -->
-
-        <StackPanel Grid.Row="0"
-                    Margin="0,0,0,10"
-                    Height="230">
-
-            <StackPanel.Background>
-
-                <ImageBrush ImageSource="/images/cif_logo.png"
-                            Stretch="None"
-                            Opacity="1.0"
-                            AlignmentX="Center"
-                            AlignmentY="Top"/>
-
-            </StackPanel.Background>
-
-            <TextBlock Text="🚔 ALPR CONTROL CENTER"
-                       FontSize="30"
-                       FontWeight="Bold"
-                       Foreground="White"
-                       HorizontalAlignment="Center"
-                       Margin="0,130,0,0"/>
-
-            <TextBlock FontSize="14"
-                       Foreground="#B0B0B0"
-                       HorizontalAlignment="Center"
-                       TextAlignment="Center">
-
-                Sistema de Reconocimiento Vehicular
-                <LineBreak/>
-                Centro de Investigaciones Forenses
-                <LineBreak/>
-                Poder Judicial de Formosa
-
-            </TextBlock>
-
+    <!-- ==================== 1. BARRA SUPERIOR ESTILO CAPTURA ==================== -->
+    <Border
+      Grid.Row="0"
+      BorderBrush="{DynamicResource BorderSubtleBrush}"
+      BorderThickness="0,0,0,1"
+      Padding="24,14"
+    >
+      <Grid>
+        <!--Contenedor de elementos de la barra superior Izquierdo-->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <TextBlock
+            Text="ALPR Control Center"
+            Foreground="{DynamicResource AccentAmberBrush}"
+            FontSize="18"
+            FontWeight="Bold"
+          />
+          <TextBlock
+            Text="  ·  Centro de Investigaciones Forenses"
+            Foreground="{DynamicResource TextSecondaryBrush}"
+            FontSize="13"
+            VerticalAlignment="Center"
+          />
         </StackPanel>
 
-        <!-- ESTADO -->
-
-        <Border Grid.Row="1"
-                Background="#252526"
-                CornerRadius="10"
-                Padding="10"
-                Margin="0,0,0,10">
-
-            <Grid>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <StackPanel>
-                    <TextBlock Text="Cámara"
-                               Foreground="#AAAAAA"/>
-                    <TextBlock Text="● Conectada"
-                               Foreground="#4CAF50"
-                               FontWeight="Bold"/>
-                </StackPanel>
-
-                <StackPanel Grid.Column="1">
-                    <TextBlock Text="API"
-                               Foreground="#AAAAAA"/>
-                    <TextBlock Text="● Disponible"
-                               Foreground="#4CAF50"
-                               FontWeight="Bold"/>
-                </StackPanel>
-
-                <StackPanel Grid.Column="2">
-                    <TextBlock Text="Base de Datos"
-                               Foreground="#AAAAAA"/>
-                    <TextBlock Text="● Conectada"
-                               Foreground="#4CAF50"
-                               FontWeight="Bold"/>
-                </StackPanel>
-
-                <StackPanel Grid.Column="3">
-                    <TextBlock Text="Última Detección"
-                               Foreground="#AAAAAA"/>
-                    <TextBlock Text="--:--"
-                               Foreground="White"
-                               FontWeight="Bold"/>
-                </StackPanel>
-
-            </Grid>
-
-        </Border>
-
-        <!-- MODULOS -->
-
-        <UniformGrid Grid.Row="2"
-                     Rows="2"
-                     Columns="2">
-
-            <!-- DETECCION -->
-
-            <Button Style="{StaticResource DashboardButtonStyle}"
-                    Click="DetectionButton_Click">
-
-                <StackPanel>
-
-                    <TextBlock Text="📷"
-                               FontSize="45"
-                               HorizontalAlignment="Center"/>
-
-                    <TextBlock Text="DETECCIÓN"
-                               FontSize="20"
-                               FontWeight="Bold"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               Margin="{StaticResource DashBoardTitle}"/>
-
-                    <TextBlock Text="Procesar imágenes, videos y cámaras IP"
-                               Foreground="#D0D0D0"
-                               TextAlignment="Center"
-                               TextWrapping="Wrap"
-                               Margin="{StaticResource DashBoardDescription}"/>
-
-                </StackPanel>
-
-            </Button>
-
-            <!-- CONSULTA -->
-
-            <Button Style="{StaticResource DashboardButtonStyle}">
-
-                <StackPanel>
-
-                    <TextBlock Text="🚗"
-                               FontSize="{StaticResource DashBoardLogoSize}"
-                               HorizontalAlignment="Center"/>
-
-                    <TextBlock Text="CONSULTA VEHICULAR"
-                               FontSize="20"
-                               FontWeight="Bold"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               Margin="{StaticResource DashBoardTitle}"/>
-
-                    <TextBlock Text="Consultar vehículos mediante patente"
-                               Foreground="#D0D0D0"
-                               TextAlignment="Center"
-                               TextWrapping="Wrap"
-                               Margin="{StaticResource DashBoardDescription}"/>
-
-                </StackPanel>
-
-            </Button>
-
-            <!-- HISTORIAL -->
-
-            <Button Style="{StaticResource DashboardButtonStyle}"
-                     Click="HistoryButton_Click">
-
-                <StackPanel>
-
-                    <TextBlock Text="📚"
-                               FontSize="{StaticResource DashBoardLogoSize}"
-                               HorizontalAlignment="Center"/>
-
-                    <TextBlock Text="HISTORIAL"
-                               FontSize="20"
-                               FontWeight="Bold"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               Margin="{StaticResource DashBoardTitle}"/>
-
-                    <TextBlock Text="Revisar registros y eventos"
-                               Foreground="#D0D0D0"
-                               TextAlignment="Center"
-                               Margin="{StaticResource DashBoardDescription}"/>
-
-                </StackPanel>
-
-            </Button>
-
-            <!-- INTELIGENCIA -->
-
-            <Button Style="{StaticResource DashboardButtonStyle}"
-                    Click="IntelligenceButton_Click">
-                <StackPanel>
-
-                    <TextBlock Text="📊"
-                               FontSize="{StaticResource DashBoardLogoSize}"
-                               HorizontalAlignment="Center"/>
-
-                    <TextBlock Text="INTELIGENCIA"
-                               FontSize="20"
-                               FontWeight="Bold"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               Margin="{StaticResource DashBoardTitle}"/>
-
-                    <TextBlock Text="Alertas, métricas y análisis"
-                               Foreground="#D0D0D0"
-                               TextAlignment="Center"
-                               Margin="{StaticResource DashBoardDescription}"/>
-
-                </StackPanel>
-
-            </Button>
-
-        </UniformGrid>
-
-        <!-- RESUMEN -->
-
-        <Border Grid.Row="3"
-                Background="#252526"
-                CornerRadius="10"
-                Padding="15"
-                Margin="10">
-
-            <Grid>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <StackPanel>
-
-                    <TextBlock Text="Estado del Sistema"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               Foreground="White"/>
-
-                    <TextBlock Text="Sistema listo para operar."
-                               Margin="0,10,0,0"
-                               Foreground="#D0D0D0"/>
-
-                    <TextBlock Text="Esperando detecciones..."
-                               Foreground="#D0D0D0"/>
-
-                </StackPanel>
-
-                <UniformGrid Grid.Column="1"
-                             Rows="1"
-                             Columns="3">
-
-                    <StackPanel>
-
-                        <TextBlock Text="0"
-                                   FontSize="28"
-                                   Foreground="#007ACC"
-                                   FontWeight="Bold"
-                                   HorizontalAlignment="Center"/>
-
-                        <TextBlock Text="Hoy"
-                                   Foreground="White"
-                                   HorizontalAlignment="Center"/>
-
-                    </StackPanel>
-
-                    <StackPanel>
-
-                        <TextBlock Text="0"
-                                   FontSize="28"
-                                   Foreground="#00C853"
-                                   FontWeight="Bold"
-                                   HorizontalAlignment="Center"/>
-
-                        <TextBlock Text="Únicos"
-                                   Foreground="White"
-                                   HorizontalAlignment="Center"/>
-
-                    </StackPanel>
-
-                    <StackPanel>
-
-                        <TextBlock Text="0"
-                                   FontSize="28"
-                                   Foreground="#FFB300"
-                                   FontWeight="Bold"
-                                   HorizontalAlignment="Center"/>
-
-                        <TextBlock Text="Alertas"
-                                   Foreground="White"
-                                   HorizontalAlignment="Center"/>
-
-                    </StackPanel>
-
-                </UniformGrid>
-
-            </Grid>
-
-        </Border>
-
-    </Grid>
-
+        <!-- Contenedor de elementos de la barra superior Derecho -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+          <!-- Insignia institucional -->
+          <Border Style="{DynamicResource AmberBadgeBorder}" Margin="0,0,12,0">
+            <TextBlock
+              Text="🏛️ CIF · PODER JUDICIAL"
+              Foreground="{DynamicResource TextOnAccentBrush}"
+              FontWeight="Bold"
+              FontSize="12"
+            />
+          </Border>
+
+          <!-- Botón Configuración (Engranaje vectorial) -->
+          <Button
+            x:Name="BtnSettings"
+            Style="{DynamicResource SubtleBackButton}"
+            ToolTip="Configuración y Apariencia"
+            Padding="10,7"
+            Click="SettingsButton_Click"
+          >
+            <Path
+              Data="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"
+              Fill="{DynamicResource AccentAmberBrush}"
+              Width="16"
+              Height="16"
+              Stretch="Uniform"
+            />
+          </Button>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- ==================== 2. ENCABEZADO CENTRAL ==================== -->
+    <StackPanel Grid.Row="1" Margin="24,16,24,12">
+      <!-- ==================== EMBLEMA VECTORIAL MODERNO CIF · ALPR ==================== -->
+      <Viewbox Width="84" Height="84" HorizontalAlignment="Center" Margin="0,0,0,12">
+        <Grid Width="100" Height="100">
+          <!-- Escudo Hexagonal Exterior con borde Ámbar -->
+          <Polygon
+            Points="50,4 92,24 92,66 50,96 8,66 8,24"
+            Fill="{DynamicResource BgSecondaryBrush}"
+            Stroke="{DynamicResource AccentAmberBrush}"
+            StrokeThickness="3"
+          />
+
+          <!-- Marco Interior Sutil -->
+          <Polygon
+            Points="50,11 85,28 85,63 50,89 15,63 15,28"
+            Fill="Transparent"
+            Stroke="{DynamicResource BorderSubtleBrush}"
+            StrokeThickness="1.5"
+          />
+
+          <!-- Marcas de Escáner ALPR (Esquinas de enfoque) -->
+          <Path
+            Data="M 28,36 L 28,30 L 35,30 M 72,36 L 72,30 L 65,30 M 28,64 L 28,70 L 35,70 M 72,64 L 72,70 L 65,70"
+            Stroke="{DynamicResource AccentAmberBrush}"
+            StrokeThickness="2"
+            StrokeStartLineCap="Round"
+            StrokeEndLineCap="Round"
+          />
+
+          <!-- Balanza Judicial Estilizada (Centro) -->
+          <Path
+            Data="M 50,26 L 50,72 M 38,72 L 62,72 M 32,38 L 68,38"
+            Stroke="{DynamicResource TextPrimaryBrush}"
+            StrokeThickness="2.5"
+            StrokeStartLineCap="Round"
+            StrokeEndLineCap="Round"
+          />
+
+          <!-- Platillos de la Balanza en Ámbar -->
+          <Path
+            Data="M 32,38 L 26,52 L 38,52 Z M 68,38 L 62,52 L 74,52 Z"
+            Fill="{DynamicResource AccentAmberBrush}"
+          />
+
+          <!-- Nodo Central (Lente / Precisión Forense) -->
+          <Ellipse
+            Width="10"
+            Height="10"
+            Fill="{DynamicResource AccentAmberBrush}"
+            Stroke="{DynamicResource BgPrimaryBrush}"
+            StrokeThickness="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Margin="0,33,0,0"
+          />
+        </Grid>
+      </Viewbox>
+      <TextBlock
+        Text="SISTEMA DE RECONOCIMIENTO VEHICULAR"
+        FontSize="22"
+        FontWeight="Bold"
+        Foreground="{DynamicResource TextPrimaryBrush}"
+        HorizontalAlignment="Center"
+      />
+
+      <TextBlock
+        Text="Poder Judicial de Formosa · Laboratorio de Informática Forense"
+        FontSize="13"
+        Foreground="{DynamicResource TextSecondaryBrush}"
+        HorizontalAlignment="Center"
+        Margin="0,4,0,0"
+      />
+    </StackPanel>
+
+    <!-- ==================== 3. TARJETA DE ESTADO DEL SISTEMA ==================== -->
+    <Border
+      Grid.Row="2"
+      Style="{DynamicResource DarkCardBorderStyle}"
+      Padding="16"
+      Margin="24,0,24,12"
+    >
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel HorizontalAlignment="Center">
+          <TextBlock
+            Text="Cámara"
+            Foreground="{DynamicResource TextSecondaryBrush}"
+            FontSize="12"
+          />
+          <TextBlock Text="● Conectada" Foreground="#4CAF50" FontWeight="Bold" Margin="0,2,0,0" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+          <TextBlock
+            Text="API Vehicular"
+            Foreground="{DynamicResource TextSecondaryBrush}"
+            FontSize="12"
+          />
+          <TextBlock Text="● Disponible" Foreground="#4CAF50" FontWeight="Bold" Margin="0,2,0,0" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+          <TextBlock
+            Text="Base de Datos"
+            Foreground="{DynamicResource TextSecondaryBrush}"
+            FontSize="12"
+          />
+          <TextBlock Text="● Conectada" Foreground="#4CAF50" FontWeight="Bold" Margin="0,2,0,0" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="3" HorizontalAlignment="Center">
+          <TextBlock
+            Text="Última Detección"
+            Foreground="{DynamicResource TextSecondaryBrush}"
+            FontSize="12"
+          />
+          <TextBlock
+            x:Name="LastDetectionTime"
+            Text="--:--"
+            Foreground="{DynamicResource AccentAmberBrush}"
+            FontWeight="Bold"
+            Margin="0,2,0,0"
+          />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- ==================== 4. MÓDULOS PRINCIPALES ==================== -->
+    <UniformGrid Grid.Row="3" Rows="2" Columns="2" Margin="16,0,16,12">
+      <!-- DETECCIÓN (Cámara) -->
+      <Button Style="{DynamicResource DashboardTileButton}" Click="DetectionButton_Click">
+        <StackPanel>
+          <Path
+            Style="{DynamicResource DashboardTileIconStyle}"
+            Data="M9,2L7.17,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4H16.83L15,2H9M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"
+          />
+          <TextBlock
+            Text="DETECCIÓN"
+            FontSize="18"
+            FontWeight="Bold"
+            Foreground="{StaticResource TextPrimaryBrush}"
+            HorizontalAlignment="Center"
+            Margin="{StaticResource DashBoardTitle}"
+          />
+          <TextBlock
+            Text="Procesar imágenes, videos y cámaras IP"
+            Foreground="{StaticResource TextSecondaryBrush}"
+            TextAlignment="Center"
+            TextWrapping="Wrap"
+            Margin="{StaticResource DashBoardDescription}"
+          />
+        </StackPanel>
+      </Button>
+
+      <!-- CONSULTA VEHICULAR (Auto frontal) -->
+      <Button Style="{DynamicResource DashboardTileButton}" Click="VehicleInfo_Click">
+        <StackPanel>
+          <Path
+            Style="{DynamicResource DashboardTileIconStyle}"
+            Data="M18.92,6.01C18.72,5.42 18.16,5 17.5,5H6.5C5.84,5 5.29,5.42 5.08,6.01L3,12V20A1,1 0 0,0 4,21H5A1,1 0 0,0 6,20V19H18V20A1,1 0 0,0 19,21H20A1,1 0 0,0 21,20V12L18.92,6.01M6.5,16A1.5,1.5 0 0,1 5,14.5A1.5,1.5 0 0,1 6.5,13A1.5,1.5 0 0,1 8,14.5A1.5,1.5 0 0,1 6.5,16M17.5,16A1.5,1.5 0 0,1 16,14.5A1.5,1.5 0 0,1 17.5,13A1.5,1.5 0 0,1 19,14.5A1.5,1.5 0 0,1 17.5,16M5,11L6.5,6.5H17.5L19,11H5Z"
+          />
+          <TextBlock
+            Text="CONSULTA VEHICULAR"
+            FontSize="18"
+            FontWeight="Bold"
+            Foreground="{StaticResource TextPrimaryBrush}"
+            HorizontalAlignment="Center"
+            Margin="{StaticResource DashBoardTitle}"
+          />
+          <TextBlock
+            Text="Consultar vehículos mediante patente"
+            Foreground="{StaticResource TextSecondaryBrush}"
+            TextAlignment="Center"
+            TextWrapping="Wrap"
+            Margin="{StaticResource DashBoardDescription}"
+          />
+        </StackPanel>
+      </Button>
+
+      <!-- HISTORIAL (Reloj / Registros) -->
+      <Button Style="{DynamicResource DashboardTileButton}" Click="HistoryButton_Click">
+        <StackPanel>
+          <Path
+            Style="{DynamicResource DashboardTileIconStyle}"
+            Data="M13.5,8H12V13L16.28,15.54L17,14.33L13.5,12.25V8M13,3A9,9 0 0,0 4,12H1L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3"
+          />
+          <TextBlock
+            Text="HISTORIAL"
+            FontSize="18"
+            FontWeight="Bold"
+            Foreground="{StaticResource TextPrimaryBrush}"
+            HorizontalAlignment="Center"
+            Margin="{StaticResource DashBoardTitle}"
+          />
+          <TextBlock
+            Text="Revisar registros y eventos capturados"
+            Foreground="{StaticResource TextSecondaryBrush}"
+            TextAlignment="Center"
+            TextWrapping="Wrap"
+            Margin="{StaticResource DashBoardDescription}"
+          />
+        </StackPanel>
+      </Button>
+
+      <!-- INTELIGENCIA (Gráfico de análisis) -->
+      <Button Style="{DynamicResource DashboardTileButton}" Click="IntelligenceButton_Click">
+        <StackPanel>
+          <Path
+            Style="{DynamicResource DashboardTileIconStyle}"
+            Data="M19,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M9,17H7V10H9V17M13,17H11V7H13V17M17,17H15V13H17V17Z"
+          />
+          <TextBlock
+            Text="INTELIGENCIA"
+            FontSize="18"
+            FontWeight="Bold"
+            Foreground="{StaticResource TextPrimaryBrush}"
+            HorizontalAlignment="Center"
+            Margin="{StaticResource DashBoardTitle}"
+          />
+          <TextBlock
+            Text="Alertas, métricas y análisis forense"
+            Foreground="{StaticResource TextSecondaryBrush}"
+            TextAlignment="Center"
+            TextWrapping="Wrap"
+            Margin="{StaticResource DashBoardDescription}"
+          />
+        </StackPanel>
+      </Button>
+    </UniformGrid>
+
+    <!-- ==================== 5. PIE DE VENTANA ==================== -->
+    <Border
+      Grid.Row="4"
+      BorderBrush="{DynamicResource BorderSubtleBrush}"
+      BorderThickness="0,1,0,0"
+      Padding="24,12"
+    >
+      <TextBlock
+        Text="Sistema listo para operar · Todos los eventos quedan registrados en auditoría"
+        Foreground="{DynamicResource TextSecondaryBrush}"
+        FontSize="12"
+        HorizontalAlignment="Center"
+      />
+    </Border>
+  </Grid>
 </Window>

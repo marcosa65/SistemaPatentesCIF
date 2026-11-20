@@ -1,0 +1,29 @@
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+>
+    <!-- ==================== FONDOS MORADO OSCURO PROFUNDO ==================== -->
+    <SolidColorBrush x:Key="BgPrimaryBrush" Color="#0D0914"/>
+    <!-- Fondo principal ventana -->
+    <SolidColorBrush x:Key="BgSecondaryBrush" Color="#171024"/>
+    <!-- Fondo tarjetas / contenedores -->
+    <SolidColorBrush x:Key="BgElevatedBrush" Color="#241938"/>
+    <!-- Hover / selección -->
+
+    <!-- ==================== BORDES Y ACENTOS JOKER ==================== -->
+    <SolidColorBrush x:Key="BorderSubtleBrush" Color="#332352"/>
+    <!-- Bordes púrpura sutil -->
+    <SolidColorBrush x:Key="AccentAmberBrush" Color="#00E676"/>
+    <!-- Verde neón principal -->
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="#69F0AE"/>
+    <!-- Verde brillante hover -->
+
+    <!-- ==================== TEXTOS ==================== -->
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F8FAFC"/>
+    <!-- Blanco puro -->
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#A799B7"/>
+    <!-- Gris lavanda secundario -->
+    <SolidColorBrush x:Key="TextOnAccentBrush" Color="#0D0914"/>
+    <!-- Texto oscuro sobre verde neón -->
+
+</ResourceDictionary>

@@ -9,10 +9,16 @@
     <PlatformTarget>x64</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <ApplicationIcon>app_icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\app_icon.ico" />
     <None Remove="images\cif_logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="app_icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,7 +26,7 @@
     <PackageReference Include="pythonnet" Version="3.2.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.1" />
     <!-- Ensure native SQLite interop is restored for the chosen runtime -->
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.115.5" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
   </ItemGroup>
   <ItemGroup>
 	<None Update="scripts\*.py">
@@ -33,9 +39,15 @@
 	</None>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\app_icon.ico" />
     <Resource Include="images\cif_logo.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="images\ALPR_icon_source.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <!-- Do not force-copy a local runtimes file (let NuGet/MSBuild supply native SQLite.Interop from the package) -->

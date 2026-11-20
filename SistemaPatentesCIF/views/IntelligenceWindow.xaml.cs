@@ -21,5 +21,10 @@ namespace SistemaPatentesCIF.views
         {
             InitializeComponent();
         }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

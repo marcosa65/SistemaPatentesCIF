@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ==================== FONDOS NEGRO AZULADO PROFUNDO ==================== -->
+    <SolidColorBrush x:Key="BgPrimaryBrush" Color="#080C14"/>
+    <!-- Fondo principal ventana -->
+    <SolidColorBrush x:Key="BgSecondaryBrush" Color="#0F1624"/>
+    <!-- Fondo tarjetas / contenedores -->
+    <SolidColorBrush x:Key="BgElevatedBrush" Color="#1A263D"/>
+    <!-- Hover / selección -->
+
+    <!-- ==================== BORDES Y ACENTOS NIGHTWING ==================== -->
+    <SolidColorBrush x:Key="BorderSubtleBrush" Color="#233554"/>
+    <!-- Bordes azul acero oscuro -->
+    <SolidColorBrush x:Key="AccentAmberBrush" Color="#00E5FF"/>
+    <!-- Cian eléctrico principal -->
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="#6EFFFF"/>
+    <!-- Cian brillante hover -->
+
+    <!-- ==================== TEXTOS ==================== -->
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F8FAFC"/>
+    <!-- Blanco puro -->
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#8B9BB4"/>
+    <!-- Gris azulado secundario -->
+    <SolidColorBrush x:Key="TextOnAccentBrush" Color="#080C14"/>
+    <!-- Texto oscuro sobre cian -->
+
+</ResourceDictionary>

@@ -7,406 +7,292 @@
         mc:Ignorable="d"
         Title="Detección de Patentes" 
         Height="820" 
-        Width="900"
+        Width="1120"
         WindowStartupLocation="CenterScreen"
-        Background="#1E1E1E">
+        Style="{StaticResource ModernDarkWindowStyle}">
 
-    <!-- RECURSOS EXCLUSIVOS DE ESTA VENTANA -->
-    <Window.Resources>
-       
-        <Style TargetType="TextBlock">
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Foreground" Value="WhiteSmoke" />
-        </Style>
-
-    </Window.Resources>
-
-    <!-- GRID PRINCIPAL -->
-    <Grid Margin="10">
-
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- CABECERA -->
+        <!-- ==================== 1. BARRA SUPERIOR UNIFICADA ==================== -->
+        <Border Grid.Row="0" 
+                BorderBrush="{StaticResource BorderSubtleBrush}" 
+                BorderThickness="0,0,0,1" 
+                Padding="24,14">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="← Volver" 
+                            Style="{StaticResource SubtleBackButton}" 
+                            Click="BtnBack_Click"
+                            Margin="0,0,16,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="DETECCIÓN DE PATENTES" 
+                                   Foreground="{StaticResource AccentAmberBrush}" 
+                                   FontSize="18" 
+                                   FontWeight="Bold"/>
+                        <TextBlock Text="Procesamiento de Imágenes, Video y Reconocimiento OCR" 
+                                   Foreground="{StaticResource TextSecondaryBrush}" 
+                                   FontSize="12"/>
+                    </StackPanel>
+                </StackPanel>
 
-        <Border 
-            Grid.Row="0"
-            Style="{StaticResource DashboardBorderStyle}"
-            Padding="15"
-            Margin="0,0,0,15">
-
-            <StackPanel>
-
-                <TextBlock Text="📷 DETECCIÓN DE PATENTES"
-                       FontSize="32"
-                       FontWeight="Bold"
-                       Foreground="White"
-                       HorizontalAlignment="Center"/>
-
-                <TextBlock Text="Procesamiento de Imágenes y Video"
-                       Foreground="#B0B0B0"
-                       HorizontalAlignment="Center"
-                       Margin="0,8,0,0"/>
-
-            </StackPanel>
-
+                <Border Style="{StaticResource AmberBadgeBorder}" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock Text="MÓDULO ALPR · OCR" 
+                               Foreground="{StaticResource TextOnAccentBrush}" 
+                               FontWeight="Bold" 
+                               FontSize="12"/>
+                </Border>
+            </Grid>
         </Border>
 
-        <!-- CONTENIDO -->
-
-        <Grid Grid.Row="1">
-
+        <!-- ==================== 2. CONTENIDO PRINCIPAL ==================== -->
+        <Grid Grid.Row="1" Margin="24,16,24,12">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.2*"/>
-                <ColumnDefinition Width="0.9*"/>
+                <ColumnDefinition Width="1.25*"/>
+                <ColumnDefinition Width="0.95*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- ===================== -->
-            <!-- PANEL IZQUIERDO -->
-            <!-- ===================== -->
+            <!-- PANEL IZQUIERDO: VISOR Y CONTROLES -->
+            <Border Grid.Column="0" 
+                    Style="{StaticResource DarkCardBorderStyle}" 
+                    Padding="16" 
+                    Margin="0,0,12,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-            <Grid Grid.Column="0">
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <!-- TITULO -->
-
-                <Border 
-                    Grid.Row="0"
-                    Style="{StaticResource DashboardBorderStyle}"
-                    Margin="0,0,10,10">
-
-                    <TextBlock Text="🖼 VISTA PREVIA"
-                        FontSize="18"
-                        FontWeight="Bold"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"/>
-                </Border>
-                
-                <Border 
-                    Grid.Row="1"
-                    Style="{StaticResource DashboardBorderStyle}"                       
-                    Height="60"
-                    Margin="0,0,10,10">
-
-                    <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Center">
-                        
-                        <!-- BOTONES ACTUALES -->
-                        <Button
-                            Content="📂 Cargar Imagen"
-                            Style="{StaticResource DashboardButtonStyle}"
-                            Margin="0"
-                            Width="150"
-                            Height="60"
-                            VerticalAlignment="Center"
-                            Click="LoadImageButton_Click"/>
-
-                        <Button 
-                            Content="⏻ Salir" 
-                            Style="{StaticResource DashboardButtonStyle}"
-                            Margin="0" 
-                            Width="120"
-                            Height="60"
-                            VerticalAlignment="Center"
-                            Click="ExitButton_Click"/>
-                    
-                    </StackPanel>
-
-                </Border>
-                <!-- IMAGEN -->
-
-                <Border Grid.Row="2"
-                    Background="#1A1A1A"
-                    BorderBrush="#303030"
-                    BorderThickness="1"
-                    CornerRadius="10"
-                    Padding="5"
-                    Margin="0,0,10,10"
-                    Height="400">
-
-                    <Grid>
-
-                        <!-- LA IMAGEN CARGADA -->
-                        <Image x:Name="imgPreview" 
-                               Stretch="Uniform" 
-                               Opacity="10"
-                               
-                        />
-                        <!-- EL OVERLAYCANVAS -->
-                        <Canvas x:Name="overlayCanvas" 
-                                IsHitTestVisible="False"
-                                
-                        />
-                          
-                    </Grid>
-
-                </Border>
-
-                <!-- ACCIONES -->
-
-                <Border 
-                    Grid.Row="3"
-                    Style="{StaticResource DashboardBorderStyle}"
-                    Margin="0,0,10,0">
-
-                    <StackPanel>
-
-                        <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Center">
-
-                            <!-- GUARDAR -->
-                            <Button
-                                Content="💾 Guardar Resultados"
-                                Width="200"
-                                Height="60"
-                                HorizontalAlignment="Center"
-                                Style="{StaticResource DashboardButtonStyle}"
-                            />
-
-                            <!-- LIMPIAR -->
-                            <Button
-                                Content="🗑️ Limpiar Resultados"
-                                Width="200"
-                                Height="60" 
-                                HorizontalAlignment="Center"
-                                Style="{StaticResource DashboardButtonStyle}"
-                                Click="CleanButton_Click"
-                            />
-
+                    <!-- Cabecera del Visor + Botón Principal -->
+                    <Grid Grid.Row="0" Margin="0,0,0,12">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Path Data="M9,2L7.17,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4H16.83L15,2H9M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"
+                                  Fill="{StaticResource AccentAmberBrush}"
+                                  Width="20" Height="20" Stretch="Uniform" Margin="0,0,8,0"/>
+                            <TextBlock Text="VISTA PREVIA DE CAPTURA"
+                                       FontSize="15"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       VerticalAlignment="Center"/>
                         </StackPanel>
 
-                        <TextBlock
-                            Text="© 2026 Sistema de Patentes CIF&#10;Centro de Investigaciones Forenses&#10;Todos los derechos reservados"
-                            FontSize="12"
-                            Foreground="#B0B0B0"
-                            TextAlignment="Center"
-                            Margin="0,0,0,0"/>
+                        <Button Content="+ Cargar Imagen"
+                                Style="{StaticResource PrimaryAccentButton}"
+                                HorizontalAlignment="Right"
+                                Click="LoadImageButton_Click"/>
+                    </Grid>
 
-                    </StackPanel>
+                    <!-- Lienzo de Imagen y Overlay -->
+                    <Border Grid.Row="1"
+                            Background="{StaticResource BgPrimaryBrush}"
+                            BorderBrush="{StaticResource BorderSubtleBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="6"
+                            Margin="0,0,0,14">
+                        <Grid>
+                            <Image x:Name="imgPreview" Stretch="Uniform"/>
+                            <Canvas x:Name="overlayCanvas" IsHitTestVisible="False"/>
+                        </Grid>
+                    </Border>
 
-                </Border>
+                    <!-- Botones de Acción Inferiores -->
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-            </Grid>
+                        <Button Grid.Column="0"
+                                Content="Guardar Resultados"
+                                Style="{StaticResource OutlineAmberButton}"/>
 
-            <!-- ===================== -->
-            <!-- PANEL DERECHO -->
-            <!-- ===================== -->
+                        <Button Grid.Column="2"
+                                Content="Limpiar Vista"
+                                Style="{StaticResource SubtleBackButton}"
+                                Click="CleanButton_Click"/>
+                    </Grid>
+                </Grid>
+            </Border>
 
-            <Grid Grid.Column="1">
-
+            <!-- PANEL DERECHO: RESULTADO OCR E HISTORIAL -->
+            <Grid Grid.Column="1" Margin="12,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- RESULTADO OCR -->
-
-                <Border 
-                    Grid.Row="0"
-                    Style="{StaticResource DashboardBorderStyle}">
-
+                <!-- TARJETA RESULTADO OCR -->
+                <Border Grid.Row="0" Style="{StaticResource DarkCardBorderStyle}" Padding="18" Margin="0,0,0,14">
                     <StackPanel>
+                        <TextBlock Text="RESULTADO OCR"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   Margin="0,0,0,10"/>
 
-                        <TextBlock Text="👁 RESULTADO OCR"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               Margin="0,0,0,10"/>
-
-                        <!-- TODOS TUS CONTROLES ACTUALES -->
-                        
-                            <TextBlock 
-                                Text="Placa Detectada:" 
-                                FontWeight="Bold" FontSize="18" />
-                            <TextBlock
-                                x:Name="TxtDetectedPlate"
-                                Text="-"
-                                FontSize="40"
-                                FontWeight="Bold"
-                                Foreground="Green"
-                                Margin="0,5,0,15"
-                            />
-                            <Line X1="0" Y1="0" X2="400" Y2="0" Stroke="Gray" 
-                                  StrokeThickness="2" 
-                                  Margin="0,0,0,15"
-                            />
-                            <TextBlock x:Name="TxtConfidencePlate" Text="Confianza: -" Margin="0,0,0,15" />
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock
-                                    x:Name="PaisDetectado"
-                                    Text="País: -"
-                                    Margin="0,0,0,15"
-                                    VerticalAlignment="Center"
-                                />
-                                <TextBlock x:Name="ConfianzaPais" Text="Confianza País: -" Margin="40,0,0,15" />
+                        <!-- Caja destacada para la Patente -->
+                        <Border Background="{StaticResource BgPrimaryBrush}"
+                                BorderBrush="{StaticResource AccentAmberBrush}"
+                                BorderThickness="1.5"
+                                CornerRadius="8"
+                                Padding="16,10"
+                                Margin="0,0,0,14">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="PLACA DETECTADA"
+                                           FontSize="11"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="TxtDetectedPlate"
+                                           Text="-"
+                                           FontSize="38"
+                                           FontWeight="Bold"
+                                           Foreground="{StaticResource AccentAmberBrush}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,2,0,0"/>
                             </StackPanel>
-                    
-                    </StackPanel>
+                        </Border>
 
+                        <!-- Métricas de Confianza y País -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock x:Name="TxtConfidencePlate" 
+                                       Grid.Column="0" 
+                                       Text="Confianza Placa: -" 
+                                       FontSize="13"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+
+                            <TextBlock x:Name="PaisDetectado" 
+                                       Grid.Column="1" 
+                                       Text="País: -" 
+                                       FontSize="13"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       HorizontalAlignment="Center"/>
+
+                            <TextBlock x:Name="ConfianzaPais" 
+                                       Grid.Column="2" 
+                                       Text="Conf. País: -" 
+                                       FontSize="13"
+                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       HorizontalAlignment="Right"/>
+                        </Grid>
+                    </StackPanel>
                 </Border>
 
-                <!-- HISTORIAL -->
-
-                <Border 
-                    Grid.Row="1"
-                    Style="{StaticResource DashboardBorderStyle}">
-                    
+                <!-- TARJETA HISTORIAL DE LECTURAS -->
+                <Border Grid.Row="1" Style="{StaticResource DarkCardBorderStyle}" Padding="16" Margin="0,0,0,14">
                     <Grid>
-
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <!-- EL TEXTO CENTRAL -->
-                        <TextBlock Text="📚 HISTORIAL DE LECTURAS"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               Margin="0,0,0,10"/>
-                        <TextBlock Text="Últimas Detecciones Procesadas"
-                               Foreground="#B0B0B0"
-                               HorizontalAlignment="Center" 
-                               Margin="0,30,0,10"/>
-                        <!-- OBJETO DATAGRID -->
+
+                        <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                            <TextBlock Text="HISTORIAL DE LECTURAS"
+                                       FontSize="15"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                            <TextBlock Text="Últimas detecciones procesadas en esta sesión"
+                                       FontSize="12"
+                                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                        </StackPanel>
+
                         <DataGrid x:Name="PlateDataGrid"
-                               Background="#252526"
-                               Foreground="WhiteSmoke"
-                               RowBackground="#252526"
-                               AlternatingRowBackground="#35353A"
-                               HeadersVisibility="Column"
-                               GridLinesVisibility="None"
-                               BorderBrush="#303030"
-                               BorderThickness="1"
-                               SelectedCellsChanged="PlateDataGrid_SelectedCellsChanged"
-                               IsReadOnly="True"
-                               CanUserAddRows="False"
-                               CanUserDeleteRows="False"
-                               CanUserResizeRows="False"
-                               AutoGenerateColumns="False"
-                               Height="200"
-                               Margin="0,60,0,0"
-                        >
-                            <DataGrid.ColumnHeaderStyle>
-                                <Style TargetType="DataGridColumnHeader">
-                                    <Setter Property="Background"
-                                        Value="#2D2D30" />
-                                    <Setter Property="Foreground"
-                                        Value="White" />
-                                    <Setter Property="FontWeight"
-                                        Value="SemiBold" />
-                                    <Setter Property="BorderBrush"
-                                        Value="#404040" />
-                                    <Setter Property="BorderThickness"
-                                        Value="0,0,1,1" />
-                                </Style>
-                            </DataGrid.ColumnHeaderStyle>
+                                  Grid.Row="1"
+                                  Style="{StaticResource DarkDataGridStyle}"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  SelectedCellsChanged="PlateDataGrid_SelectedCellsChanged">
                             <DataGrid.Columns>
-                                <DataGridTextColumn 
-                                    Header="Hora" 
-                                    Binding="{Binding Hora}" 
-                                    
-                                    Width="1.2*" />
-                                <DataGridTextColumn Header="Placa" Binding="{Binding Placa}" Width="*" />
-                                <DataGridTextColumn
-                                        x:Name="DataConfidence"
-                                        Header="Confianza"
-                                        Binding="{Binding Confianza}"
-                                        Width="0.7*"
-                                />
+                                <DataGridTextColumn Header="Hora" Binding="{Binding Hora}" Width="1.2*"/>
+                                <DataGridTextColumn Header="Placa" Binding="{Binding Placa}" Width="*" FontWeight="Bold"/>
+                                <DataGridTextColumn Header="Confianza" Binding="{Binding Confianza}" Width="0.8*"/>
                                 <DataGridTemplateColumn Header="Estado" Width="70">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <!-- El Background se enlaza (Binding) a la propiedad del objeto -->
                                             <Border Background="{Binding ColorHex}" 
-                                                    Width="25" 
-                                                    Height="25" 
-                                                    CornerRadius="12.5"
+                                                    Width="18" 
+                                                    Height="18" 
+                                                    CornerRadius="9"
                                                     HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                            />
+                                                    VerticalAlignment="Center"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
-
                     </Grid>
-
                 </Border>
 
-                <!-- BOTONES INFERIORES -->
+                <!-- TARJETA ACCIONES VEHICULARES -->
+                <Border Grid.Row="2" Style="{StaticResource DarkCardBorderStyle}" Padding="14">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.3*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                <Border Grid.Row="2"
-                    Style="{StaticResource DashboardBorderStyle}">
+                        <Button Grid.Column="0"
+                                Content="Consultar Info Vehicular"
+                                Style="{StaticResource PrimaryAccentButton}"
+                                Click="GetVehicleInfo_Click"/>
 
-                    <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Center">
-
-                        <!-- CONSULTAR INFO VEHICULAR -->
-                        <Button
-                            Content="▶ Consultar Info Vehicular"
-                            Width="180"
-                            Height="60"
-                            Style="{StaticResource DashboardButtonStyle}"
-                            Click="GetVehicleInfo_Click"
-                        />
-                        <!-- EXPORTAR CSV -->
-                        <Button 
-                            Content="📊 Exportar CSV"
-                            Width="160"
-                            Height="60"
-                            Style="{StaticResource DashboardButtonStyle}"
-                        />
-
-                    </StackPanel>
-
+                        <Button Grid.Column="2"
+                                Content="Exportar CSV"
+                                Style="{StaticResource OutlineAmberButton}"/>
+                    </Grid>
                 </Border>
-
             </Grid>
-
         </Grid>
 
-        <!-- ESTADO DEL SISTEMA -->
+        <!-- ==================== 3. BARRA DE ESTADO INFERIOR ==================== -->
+        <Border Grid.Row="2" 
+                BorderBrush="{StaticResource BorderSubtleBrush}" 
+                BorderThickness="0,1,0,0" 
+                Padding="24,12">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock x:Name="StatusBarReadyText"
+                               Text="● Listo"
+                               Foreground="#4CAF50"
+                               FontWeight="SemiBold"
+                               FontSize="13"
+                               Margin="0,0,16,0"/>
 
-        <Border 
-            Grid.Row="2"
-            Style="{StaticResource DashboardBorderStyle}"
-            Padding="10"
-            Margin="0,10,0,0">
+                    <ProgressBar x:Name="OcrProgress"
+                                 Style="{StaticResource AmberProgressBarStyle}"
+                                 Width="220"
+                                 Margin="0,0,16,0"/>
 
-            <DockPanel>
+                    <TextBlock x:Name="StatusBarInfo"
+                               Text="Esperando acción..."
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               FontSize="13"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
 
-                <TextBlock x:Name="StatusBarReadyText"
-                       Text="Listo"
-                       Foreground="White"
-                       Margin="0,0,15,0"/>
-
-                <ProgressBar x:Name="OcrProgress"
-                         Width="220"
-                         Height="16"
-                         Background="#404040"/>
-
-                <TextBlock x:Name="StatusBarInfo"
-                       Text="Esperando acción..."
-                       Foreground="#B0B0B0"
-                       Margin="15,0,0,0"/>
-
-            </DockPanel>
-
+                <TextBlock Text="© 2026 CIF · Poder Judicial de Formosa"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           FontSize="12"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"/>
+            </Grid>
         </Border>
-
     </Grid>
-    
+
+
 </Window>

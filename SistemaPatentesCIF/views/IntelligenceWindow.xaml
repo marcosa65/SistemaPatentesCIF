@@ -5,204 +5,287 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SistemaPatentesCIF.views"
         mc:Ignorable="d"
-        Title="Centro de Inteligencia"
-        Height="700"
-        Width="900"
+        Title="Centro de Inteligencia · ALPR"
+        Height="780"
+        Width="1040"
         WindowStartupLocation="CenterScreen"
-        Background="#1E1E1E">
-    <Grid Margin="20">
+        Style="{StaticResource ModernDarkWindowStyle}">
 
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <!-- Barra Superior -->
             <RowDefinition Height="Auto"/>
+            <!-- Tarjetas KPI -->
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <!-- Paneles de Análisis -->
+            <RowDefinition Height="Auto"/>
+            <!-- Pie Institucional -->
         </Grid.RowDefinitions>
 
-        <!-- CABECERA -->
-
+        <!-- ==================== 1. BARRA SUPERIOR UNIFICADA ==================== -->
         <Border Grid.Row="0"
-                Background="#252526"
-                CornerRadius="10"
-                Padding="15"
-                Margin="0,0,0,15">
-
-            <StackPanel>
-
-                <TextBlock Text="📊 CENTRO DE INTELIGENCIA"
-                           FontSize="26"
-                           FontWeight="Bold"
-                           Foreground="White"/>
-
-                <TextBlock Text="Métricas operativas y análisis de actividad"
-                           Foreground="#B0B0B0"
-                           Margin="0,5,0,0"/>
-
-            </StackPanel>
-
-        </Border>
-
-        <!-- KPI -->
-
-        <UniformGrid Grid.Row="1"
-                     Rows="1"
-                     Columns="3"
-                     Margin="0,0,0,15">
-
-            <!-- HOY -->
-
-            <Border Background="#252526"
-                    CornerRadius="10"
-                    Margin="5"
-                    Padding="15">
-
-                <StackPanel>
-
-                    <TextBlock Text="HOY"
-                               Foreground="#B0B0B0"
-                               FontWeight="Bold"
-                               HorizontalAlignment="Center"/>
-
-                    <TextBlock x:Name="txtHoy"
-                               Text="0"
-                               FontSize="36"
-                               FontWeight="Bold"
-                               Foreground="#007ACC"
-                               HorizontalAlignment="Center"
-                               Margin="0,10,0,0"/>
-
-                </StackPanel>
-
-            </Border>
-
-            <!-- UNICOS -->
-
-            <Border Background="#252526"
-                    CornerRadius="10"
-                    Margin="5"
-                    Padding="15">
-
-                <StackPanel>
-
-                    <TextBlock Text="VEHÍCULOS ÚNICOS"
-                               Foreground="#B0B0B0"
-                               FontWeight="Bold"
-                               HorizontalAlignment="Center"/>
-
-                    <TextBlock x:Name="txtUnicos"
-                               Text="0"
-                               FontSize="36"
-                               FontWeight="Bold"
-                               Foreground="#00C853"
-                               HorizontalAlignment="Center"
-                               Margin="0,10,0,0"/>
-
-                </StackPanel>
-
-            </Border>
-
-            <!-- ALERTAS -->
-
-            <Border Background="#252526"
-                    CornerRadius="10"
-                    Margin="5"
-                    Padding="15">
-
-                <StackPanel>
-
-                    <TextBlock Text="ALERTAS"
-                               Foreground="#B0B0B0"
-                               FontWeight="Bold"
-                               HorizontalAlignment="Center"/>
-
-                    <TextBlock x:Name="txtAlertas"
-                               Text="0"
-                               FontSize="36"
-                               FontWeight="Bold"
-                               Foreground="#FFB300"
-                               HorizontalAlignment="Center"
-                               Margin="0,10,0,0"/>
-
-                </StackPanel>
-
-            </Border>
-
-        </UniformGrid>
-
-        <!-- TOP VEHICULOS -->
-
-        <Border Grid.Row="2"
-                Background="#252526"
-                CornerRadius="10"
-                Padding="15"
-                Margin="0,0,0,15">
-
+                BorderBrush="{StaticResource BorderSubtleBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="24,14">
             <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="BtnBack"
+                            Content="← Volver"
+                            Style="{StaticResource SubtleBackButton}"
+                            Margin="0,0,16,0"
+                            Click="BtnBack_Click"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="CENTRO DE INTELIGENCIA"
+                                   Foreground="{StaticResource AccentAmberBrush}"
+                                   FontSize="18"
+                                   FontWeight="Bold"/>
+                        <TextBlock Text="Métricas operativas, patrones de circulación y análisis forense"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   FontSize="12"/>
+                    </StackPanel>
+                </StackPanel>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock Text="🏆 Vehículos Más Observados"
-                           FontSize="18"
-                           FontWeight="Bold"
-                           Foreground="White"/>
-
-                <ListView Grid.Row="1"
-                          Margin="0,15,0,0"
-                          Background="#252526"
-                          Foreground="White"
-                          BorderThickness="0">
-
-                    <ListViewItem>
-                        Sin datos disponibles
-                    </ListViewItem>
-
-                </ListView>
-
+                <Border Style="{StaticResource AmberBadgeBorder}"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center">
+                    <TextBlock Text="ANALÍTICA · ALPR"
+                               Foreground="{StaticResource TextOnAccentBrush}"
+                               FontWeight="Bold"
+                               FontSize="12"/>
+                </Border>
             </Grid>
-
         </Border>
 
-        <!-- ACTIVIDAD -->
+        <!-- ==================== 2. INDICADORES CLAVE (KPI) ==================== -->
+        <Grid Grid.Row="1" Margin="24,18,24,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
+            <!-- KPI 1: HOY -->
+            <Border Grid.Column="0" Style="{StaticResource DarkCardBorderStyle}" Padding="18">
+                <Grid>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="LECTURAS DE HOY"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock x:Name="txtHoy"
+                                   Text="0"
+                                   FontSize="36"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource AccentAmberBrush}"
+                                   Margin="0,4,0,2"/>
+                        <TextBlock Text="Eventos registrados en la jornada"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   FontSize="11"/>
+                    </StackPanel>
+
+                    <Border Background="#1AF5B800"
+                            Width="44" Height="44"
+                            CornerRadius="10"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top">
+                        <Path Data="M19,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M9,17H7V10H9V17M13,17H11V7H13V17M17,17H15V13H17V17Z"
+                              Fill="{StaticResource AccentAmberBrush}"
+                              Width="22" Height="22" Stretch="Uniform"
+                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- KPI 2: VEHÍCULOS ÚNICOS -->
+            <Border Grid.Column="2" Style="{StaticResource DarkCardBorderStyle}" Padding="18">
+                <Grid>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="VEHÍCULOS ÚNICOS"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock x:Name="txtUnicos"
+                                   Text="0"
+                                   FontSize="36"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   Margin="0,4,0,2"/>
+                        <TextBlock Text="Dominios distintos identificados"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   FontSize="11"/>
+                    </StackPanel>
+
+                    <Border Background="{StaticResource BgElevatedBrush}"
+                            Width="44" Height="44"
+                            CornerRadius="10"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top">
+                        <Path Data="M18.92,6.01C18.72,5.42 18.16,5 17.5,5H6.5C5.84,5 5.29,5.42 5.08,6.01L3,12V20A1,1 0 0,0 4,21H5A1,1 0 0,0 6,20V19H18V20A1,1 0 0,0 19,21H20A1,1 0 0,0 21,20V12L18.92,6.01M6.5,16A1.5,1.5 0 0,1 5,14.5A1.5,1.5 0 0,1 6.5,13A1.5,1.5 0 0,1 8,14.5A1.5,1.5 0 0,1 6.5,16M17.5,16A1.5,1.5 0 0,1 16,14.5A1.5,1.5 0 0,1 17.5,13A1.5,1.5 0 0,1 19,14.5A1.5,1.5 0 0,1 17.5,16M5,11L6.5,6.5H17.5L19,11H5Z"
+                              Fill="{StaticResource AccentAmberBrush}"
+                              Width="22" Height="22" Stretch="Uniform"
+                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- KPI 3: ALERTAS -->
+            <Border Grid.Column="4" Style="{StaticResource DarkCardBorderStyle}" Padding="18">
+                <Grid>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="ALERTAS ACTIVAS"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock x:Name="txtAlertas"
+                                   Text="0"
+                                   FontSize="36"
+                                   FontWeight="Bold"
+                                   Foreground="#FF5252"
+                                   Margin="0,4,0,2"/>
+                        <TextBlock Text="Coincidencias prioritarias o reiteradas"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   FontSize="11"/>
+                    </StackPanel>
+
+                    <Border Background="#26FF5252"
+                            Width="44" Height="44"
+                            CornerRadius="10"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top">
+                        <Path Data="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"
+                              Fill="#FF5252"
+                              Width="20" Height="20" Stretch="Uniform"
+                              HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ==================== 3. CONTENIDO ANALÍTICO (2 COLUMNAS) ==================== -->
+        <Grid Grid.Row="2" Margin="24,0,24,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="1.15*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- PANEL IZQUIERDO: VEHÍCULOS MÁS OBSERVADOS -->
+            <Border Grid.Column="0" Style="{StaticResource DarkCardBorderStyle}" Padding="18">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,14">
+                        <Path Data="M12,2L15.09,8.26L22,9.27L17,14.14L18.18,21.02L12,17.77L5.82,21.02L7,14.14L2,9.27L8.91,8.26L12,2Z"
+                              Fill="{StaticResource AccentAmberBrush}"
+                              Width="18" Height="18" Stretch="Uniform"
+                              Margin="0,0,8,0"/>
+                        <TextBlock Text="VEHÍCULOS MÁS OBSERVADOS"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <Border Grid.Row="1"
+                            Background="{StaticResource BgPrimaryBrush}"
+                            BorderBrush="{StaticResource BorderSubtleBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="8">
+                        <ListView x:Name="LvTopVehicles"
+                                  Background="Transparent"
+                                  Foreground="{StaticResource TextPrimaryBrush}"
+                                  BorderThickness="0">
+                            <ListViewItem Foreground="{StaticResource TextSecondaryBrush}" Padding="8,10">
+                                Sin datos disponibles en esta sesión
+                            </ListViewItem>
+                        </ListView>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- PANEL DERECHO: ACTIVIDAD DEL SISTEMA -->
+            <Border Grid.Column="2" Style="{StaticResource DarkCardBorderStyle}" Padding="18">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,14">
+                        <Path Data="M16,11.78L20.24,4.45L21.97,5.45L16.74,14.5L10.23,10.75L5.46,19H22V21H2V3H4V17.54L9.5,8L16,11.78Z"
+                              Fill="{StaticResource AccentAmberBrush}"
+                              Width="18" Height="18" Stretch="Uniform"
+                              Margin="0,0,8,0"/>
+                        <TextBlock Text="ACTIVIDAD DEL SISTEMA Y TENDENCIAS"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <Border Grid.Row="1"
+                            Background="{StaticResource BgPrimaryBrush}"
+                            BorderBrush="{StaticResource BorderSubtleBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="20">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Border Background="{StaticResource BgSecondaryBrush}"
+                                    BorderBrush="{StaticResource BorderSubtleBrush}"
+                                    BorderThickness="1"
+                                    Width="56" Height="56"
+                                    CornerRadius="28"
+                                    HorizontalAlignment="Center"
+                                    Margin="0,0,0,14">
+                                <Path Data="M19,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M9,17H7V10H9V17M13,17H11V7H13V17M17,17H15V13H17V17Z"
+                                      Fill="{StaticResource AccentAmberBrush}"
+                                      Width="24" Height="24" Stretch="Uniform"
+                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+
+                            <TextBlock Text="Sin registros disponibles"
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       FontWeight="SemiBold"
+                                       HorizontalAlignment="Center"
+                                       FontSize="15"/>
+
+                            <TextBlock Text="Las estadísticas y gráficos de frecuencia aparecerán automáticamente cuando existan detecciones almacenadas en SQL Server."
+                                       TextAlignment="Center"
+                                       TextWrapping="Wrap"
+                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       FontSize="12"
+                                       MaxWidth="360"
+                                       Margin="0,8,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ==================== 4. PIE DE VENTANA ==================== -->
         <Border Grid.Row="3"
-                Background="#252526"
-                CornerRadius="10"
-                Padding="15">
-
+                BorderBrush="{StaticResource BorderSubtleBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="24,12">
             <Grid>
+                <TextBlock Text="● Módulo preparado para consultas analíticas en tiempo real"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           FontSize="12"
+                           VerticalAlignment="Center"/>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock Text="📈 Actividad del Sistema"
-                           FontSize="18"
-                           FontWeight="Bold"
-                           Foreground="White"/>
-
-                <StackPanel Grid.Row="1"
-                            VerticalAlignment="Center">
-
-                    <TextBlock Text="Sin registros disponibles"
-                               Foreground="#B0B0B0"
-                               HorizontalAlignment="Center"
-                               FontSize="16"/>
-
-                    <TextBlock Text="Las estadísticas aparecerán automáticamente cuando existan detecciones almacenadas."
-                               TextAlignment="Center"
-                               TextWrapping="Wrap"
-                               Foreground="#707070"
-                               Margin="20,10,20,0"/>
-
-                </StackPanel>
-
+                <TextBlock Text="© 2026 Sistema de Patentes CIF · Poder Judicial de Formosa"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           FontSize="12"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"/>
             </Grid>
-
         </Border>
-
     </Grid>
 </Window>
