@@ -93,7 +93,7 @@
                                             <Ellipse Width="16" Height="16" Fill="#F5B800"/>
                                         </StackPanel>
                                     </Border>
-                                    <TextBlock Text="Batman" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="🦇 Batman" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
                                     <TextBlock Text="Oscuro · Ámbar" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
                                 </StackPanel>
                             </Button>
@@ -112,7 +112,7 @@
                                             <Ellipse Width="16" Height="16" Fill="#DC2626"/>
                                         </StackPanel>
                                     </Border>
-                                    <TextBlock Text="Superman" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="💎 Superman" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
                                     <TextBlock Text="Azul Noche · Carmesí" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
                                 </StackPanel>
                             </Button>
@@ -131,7 +131,7 @@
                                             <Ellipse Width="16" Height="16" Fill="#00E676"/>
                                         </StackPanel>
                                     </Border>
-                                    <TextBlock Text="Joker" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="🃏 Joker" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
                                     <TextBlock Text="Púrpura · Verde Neón" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
                                 </StackPanel>
                             </Button>
@@ -150,7 +150,7 @@
                                             <Ellipse Width="16" Height="16" Fill="#00E5FF"/>
                                         </StackPanel>
                                     </Border>
-                                    <TextBlock Text="Nightwing" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="🦅 Nightwing" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center"/>
                                     <TextBlock Text="Pizarra · Cian Eléctrico" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
                                 </StackPanel>
                             </Button>
