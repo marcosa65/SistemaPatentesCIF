@@ -23,6 +23,7 @@ namespace SistemaPatentesCIF
             LastDetectionTime.Text =
                 DataBaseManager.GetLastDetection()?.DetectionDate.ToString("g")
                 ?? "No hay detecciones";
+            
         }
 
         private void Window_Loaded(object? sender, EventArgs e)

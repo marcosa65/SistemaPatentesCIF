@@ -8,11 +8,13 @@ namespace SistemaPatentesCIF
 {
     public static class SettingsManager
     {
-        private static readonly string FolderPath = Path.Combine(
-            Environment.GetFolderPath(
-                Environment.SpecialFolder.LocalApplicationData),
-            "SistemaPatentesCIF"
-        );
+
+        public static readonly string FolderPath = AppContext.BaseDirectory;
+        //public static readonly string FolderPath = Path.Combine(
+        //    Environment.GetFolderPath(
+        //        Environment.SpecialFolder.LocalApplicationData),
+        //    "SistemaPatentesCIF"
+        //);
 
         private static readonly string FilePath = Path.Combine(FolderPath, "settings.json");
 

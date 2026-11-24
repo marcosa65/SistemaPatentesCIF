@@ -9,7 +9,7 @@ namespace SistemaPatentesCIF.views
     public partial class VehicleHistoryDetailWindow : Window
     {
 
-        public VehicleHistoryDetailWindow( VehicleInfoModel vehicleInfo)
+        public VehicleHistoryDetailWindow( VehicleInfoRecord vehicleInfo)
         {
             InitializeComponent();
             this.DataContext = vehicleInfo;

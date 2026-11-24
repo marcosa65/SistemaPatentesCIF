@@ -22,9 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GMap.NET.WinPresentation" Version="2.1.7" />
+    <PackageReference Include="Mapsui.Wpf" Version="5.2.0" />
     <PackageReference Include="pythonnet" Version="3.2.1" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.9.1" />
     <!-- Ensure native SQLite interop is restored for the chosen runtime -->
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
   </ItemGroup>

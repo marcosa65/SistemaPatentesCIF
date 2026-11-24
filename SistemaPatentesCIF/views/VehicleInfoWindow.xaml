@@ -1,7 +1,7 @@
 ﻿<Window x:Class="SistemaPatentesCIF.VehicleInfoWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:gmap="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
+        xmlns:mapsui="clr-namespace:Mapsui.UI.Wpf;assembly=Mapsui.UI.Wpf"
         Title="Consulta Vehicular · ALPR"
         Height="820"
         Width="1120"
@@ -130,15 +130,14 @@
                                    Foreground="{StaticResource TextPrimaryBrush}"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
-
+                    <!-- MAPA PARA VER RADICACION AUTOMOTOR -->    
                     <Border Grid.Row="1"
-                            Background="{StaticResource BgPrimaryBrush}"
-                            BorderBrush="{StaticResource BorderSubtleBrush}"
-                            BorderThickness="1"
-                            CornerRadius="8"
-                            ClipToBounds="True">
-                        <gmap:GMapControl x:Name="GMapControl"
-                                          Background="#0C0D12"/>
+                        Background="{StaticResource BgPrimaryBrush}"
+                        BorderBrush="{StaticResource BorderSubtleBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        ClipToBounds="True">
+                        <mapsui:MapControl x:Name="MapControl" />
                     </Border>
                 </Grid>
             </Border>

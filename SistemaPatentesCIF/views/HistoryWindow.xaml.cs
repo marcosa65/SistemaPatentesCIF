@@ -1,7 +1,7 @@
-﻿using SistemaPatentesCIF.data;
-using SistemaPatentesCIF.models;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using SistemaPatentesCIF.data;
+using SistemaPatentesCIF.models;
 
 namespace SistemaPatentesCIF.views
 {
@@ -15,10 +15,22 @@ namespace SistemaPatentesCIF.views
         public HistoryWindow()
         {
             InitializeComponent();
+
+            // Cargar los registros de detección desde la base de datos local
             recordList = DataBaseManager.GetAllDetections();
-            InjectMockVehicleDetails(recordList); // Inyecta detalles de vehículos simulados
+
+            // Para cada registro, obtenemos la información del vehículo desde la base de datos local
+            // Esto asegura que cada registro tenga su información vehicular asociada si está disponible
+            foreach (DetectionRecord record in recordList)
+            {
+                VehicleInfoRecord? info = DataBaseManager.GetVehicleInfo(record.Plate);
+                record.VehicleInfo = info;
+            }
+
+            //InjectMockVehicleDetails(recordList); // Inyecta detalles de vehículos simulados
+
+            // Actualizar la fuente de datos del DataGrid con los registros obtenidos
             UpdateDataGridSource(recordList);
-            TxtTotalRecords.Text = $"Total de registros: {recordList.Count}";
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
@@ -29,6 +41,7 @@ namespace SistemaPatentesCIF.views
         private void UpdateDataGridSource(List<DetectionRecord> detections)
         {
             dgDetections.ItemsSource = detections;
+            TxtTotalRecords.Text = $"Total de registros: {detections.Count}";
         }
 
         private void TxtFilterPlate_TextChanged(
@@ -57,19 +70,24 @@ namespace SistemaPatentesCIF.views
             TxtFilterPlate.Text = string.Empty;
         }
 
-        private void BtnViewDetail_Click(object sender, RoutedEventArgs e) 
+        private void BtnViewDetail_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Obtienes el botón que disparó el clic y extraes el objeto de esa fila (DetectionRecord)
+            // Obtiene el botón que disparó el clic y extrae el objeto de esa fila (DetectionRecord)
             if (sender is Button btn && btn.DataContext is DetectionRecord selectedRecord)
             {
-                // 2. Verificas que el registro realmente tenga datos vehiculares cargados
-                if (selectedRecord.VehicleInfo.HasValue)
+                // Verifica que el registro realmente tenga datos vehiculares cargados
+                if (selectedRecord.HasVehicleInfo)
                 {
-                    // 3. Instancias la ventana pasándole el struct VehicleInfoModel por el constructor
-                    var detailWindow = new VehicleHistoryDetailWindow(selectedRecord.VehicleInfo.Value)
-                    {
-                        Owner = this // Centra la ventana emergente sobre HistoryWindow
-                    };
+                    // Se instancia de Informacion vehicular pasando el VehicleInfoRecord por el constructor
+                    var detailWindow = new 
+                        VehicleHistoryDetailWindow
+                        (
+                            selectedRecord.VehicleInfo ?? new VehicleInfoRecord()
+                        );
+                        {
+                            detailWindow.Owner = this; // Centra la ventana emergente sobre HistoryWindow
+                        }
+
 
                     // 4. La muestras como ventana modal (bloquea la de atrás hasta que se cierre)
                     detailWindow.ShowDialog();
@@ -77,51 +95,54 @@ namespace SistemaPatentesCIF.views
             }
         }
 
+        // Método para inyectar detalles de vehículos simulados en registros aleatorios
+        // Solo para fines de prueba y desarrollo, debe comentarse en producción
         private void InjectMockVehicleDetails(List<DetectionRecord> recordList)
         {
             if (recordList == null || recordList.Count == 0)
                 return;
 
-            var mockVehicles = new List<VehicleInfoModel>
+            var mockVehicles = new List<VehicleInfoRecord>
             {
-                new VehicleInfoModel
+                new VehicleInfoRecord
                 {
                     Make = "Toyota",
                     Model = "Hilux 4x4 SRX",
                     Year = 2022,
                     PlateFormat = "Mercosur (AA000AA)",
                     VehicleKind = "Pick-Up",
-                    CurrentLocation = new VehicleLocationInfoModel
-                    {
-                        Province = "Formosa",
-                        City = "Formosa Capital",
-                    },
+                    Province = "Formosa",
+                    City = "Formosa Capital",
                 },
-                new VehicleInfoModel
+                new VehicleInfoRecord
                 {
-                    Make = "Volkswagen",
-                    Model = "Amarok V6 Extreme",
-                    Year = 2021,
+                    Make = "Chevrolet",
+                    Model = "Onix LTZ",
+                    Year = 2020,
+                    PlateFormat = "Mercosur (AA000AA)",
+                    VehicleKind = "Hatchback",
+                    Province = "Chaco",
+                    City = "Resistencia",
+                },
+                new VehicleInfoRecord
+                {
+                    Make = "Renault",
+                    Model = "Duster Oroch",
+                    Year = 2019,
                     PlateFormat = "Mercosur (AA000AA)",
                     VehicleKind = "Pick-Up",
-                    CurrentLocation = new VehicleLocationInfoModel
-                    {
-                        Province = "Chaco",
-                        City = "Resistencia",
-                    },
+                    Province = "Corrientes",
+                    City = "Corrientes Capital",
                 },
-                new VehicleInfoModel
+                new VehicleInfoRecord
                 {
                     Make = "Ford",
                     Model = "Focus III Titanium",
                     Year = 2018,
                     PlateFormat = "Mercosur (AA000AA)",
                     VehicleKind = "Sedán 5 Puertas",
-                    CurrentLocation = new VehicleLocationInfoModel
-                    {
-                        Province = "Formosa",
-                        City = "Clorinda",
-                    },
+                    Province = "Formosa",
+                    City = "Clorinda",
                 },
             };
 
