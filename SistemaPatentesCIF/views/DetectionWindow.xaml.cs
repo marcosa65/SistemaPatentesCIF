@@ -6,8 +6,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Win32;
-using SistemaPatentesCIF.AlprLab;
+using SistemaPatentesCIF.services;
 using SistemaPatentesCIF.models;
+using SistemaPatentesCIF.data;
 
 namespace SistemaPatentesCIF.views
 {
@@ -198,10 +199,11 @@ namespace SistemaPatentesCIF.views
                 bmp = new BitmapImage(new Uri(imagePath));
                 overlayCanvas.Children.Clear();
                 UpdateProgressbar(10, "Cargando imagen...");
-                // Pausa el procesamiento por 1 segundo (1000 milisegundos)
-                await Task.Delay(1000);
+                // Pausa el procesamiento por medio segundo (500 milisegundos)
+                await Task.Delay(500);
                 imgPreview.Source = bmp;
                 UpdateProgressbar(30, "Procesando imagen...");
+                // Pausa el procesamiento por medio segundo (500 milisegundos)
                 await Task.Delay(500);
                 DetectionResult = AlprEngine.StartEngine(selectFileDialog.FileName);
                 if (DetectionResult?.Plates?.Count > 0)
@@ -237,7 +239,21 @@ namespace SistemaPatentesCIF.views
                             ?? "No detectada";
                         //
                         DrawRectangle(plate.x1, plate.y1, plate.x2, plate.y2, rectangleText);
+
+                        // Guardar la detección automaticamente en la base de datos por cada placa detectada
+                        DataBaseManager.SaveDetection(
+                            new DetectionRecord
+                            {
+                                Plate = plate.Text ?? "No detectada",
+                                Confidence = (int)(plate.Confidence * 100),
+                                Country = plate.Region ?? "No detectado",
+                                DetectionDate = DateTime.Now,
+                                ImagePath = imagePath,
+                            }
+                        );
+
                     }
+                    // Actualiza la barra de progreso y el mensaje de estado mientras se ejecuta el OCR
                     UpdateProgressbar(70, "Ejecutando  OCR...");
                     await Task.Delay(500);
                 }
@@ -252,7 +268,7 @@ namespace SistemaPatentesCIF.views
                 }
                 UpdateProgressbar(100, "Proceso finalizado...");
                 // Habilita el botón después de procesar la imagen
-                await Task.Delay(1000); // Pausa el procesamiento por 1 segundo (1000 milisegundos)
+                await Task.Delay(500); // Pausa el procesamiento por medio segundo (500 milisegundos)
                 UpdateProgressbar(0, "Esperando accion...");
             }
             else

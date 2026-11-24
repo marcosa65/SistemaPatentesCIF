@@ -17,19 +17,24 @@ namespace SistemaPatentesCIF
             this.ContentRendered += Window_ContentRendered;
         }
 
+        private void Window_Loaded(object? sender, EventArgs e)
+        {
+            // Codigo que se ejecuta cuando la ventana se carga, previamente a que se renderice completamente
+            // Todos los controles (TextBox, DataGrid, etc.) ya están cargados
+        }
+
         private void Window_ContentRendered(object? sender, EventArgs e)
         {
             // Código que se ejecuta cuando la ventana se ha renderizado completamente
             LastDetectionTime.Text =
                 DataBaseManager.GetLastDetection()?.DetectionDate.ToString("g")
                 ?? "No hay detecciones";
-            
-        }
-
-        private void Window_Loaded(object? sender, EventArgs e)
-        {
-            // Codigo que se ejecuta cuando la ventana se carga, previamente a que se renderice completamente
-            // Todos los controles (TextBox, DataGrid, etc.) ya están cargados
+            //CustomMessageBox.Show(
+            //    "Bienvenido al Sistema de Patentes CIF",
+            //    "Sistema de Patentes CIF",
+            //    MessageBoxButton.OK,
+            //    MessageBoxImage.Exclamation
+            //);
         }
 
         private void HistoryButton_Click(object sender, RoutedEventArgs e)

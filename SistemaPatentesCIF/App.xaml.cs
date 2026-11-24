@@ -1,13 +1,11 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
 using Python.Runtime;
 using SistemaPatentesCIF.data;
 using SistemaPatentesCIF.models;
 using SistemaPatentesCIF.themes;
 using SistemaPatentesCIF.utils;
+using SistemaPatentesCIF.views;
 
 namespace SistemaPatentesCIF
 {
@@ -45,7 +43,6 @@ namespace SistemaPatentesCIF
             }
 
             CreateDataBaseIfNotExists();
-
             var settings = SettingsManager.Load();
             ThemeManager.ApplyTheme(settings.ThemeName);
         }

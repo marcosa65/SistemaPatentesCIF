@@ -8,11 +8,14 @@ using Mapsui.Tiling;
 using Mapsui.Tiling.Layers;
 using Mapsui.Widgets;
 using Mapsui.Widgets.InfoWidgets;
+using SistemaPatentesCIF.data;
 using SistemaPatentesCIF.models;
 using SistemaPatentesCIF.services;
+using SistemaPatentesCIF.views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.Net.Http;
 using System.Text.Json;
@@ -25,7 +28,7 @@ namespace SistemaPatentesCIF
 {
     public partial class VehicleInfoWindow : Window
     {
-        public VehicleInfoModel? VehicleInfo { get; set; }
+        public VehicleInfoRecord? VehicleInfo { get; set; }
         public BitmapImage? vehicleImage;
         public string? PlateToLookup { get; set; }
 
@@ -33,8 +36,6 @@ namespace SistemaPatentesCIF
 
         private const string UserAgent = "SistemaPatentesCIF_Formosa/1.0";
         
-        
-
         private static readonly HttpClient _httpClient = new HttpClient
         {
             DefaultRequestHeaders =
@@ -56,13 +57,40 @@ namespace SistemaPatentesCIF
         {
             if (string.IsNullOrWhiteSpace(PlateToLookup))
                 return;
+            
+            VehicleInfoRecord? info =
+                DataBaseManager.GetVehicleInfo(PlateToLookup);
 
-            Dispatcher.BeginInvoke(
-                new Action(async () =>
+            if (info != null)
+            {
+                MessageBoxResult result = CustomMessageBox.Show(
+                    $"Se encontró información en la base de datos para la patente {PlateToLookup} \n" +
+                    $"desea actualizarla?",
+                    "Información Encontrada",
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Information
+                );
+                if (result == MessageBoxResult.Cancel)
                 {
-                    await LookupInfo();
-                }),
-                DispatcherPriority.Input
+                    // El usuario eligió no actualizar, asignar la información existente
+                    VehicleInfo = info;
+                    Dispatcher.BeginInvoke(
+                    new Action(async () =>
+                    {
+                        await AssignValuesToControlsAsync();
+                    }),
+                        DispatcherPriority.Input
+                    );
+                    return;
+                } 
+            }
+            // Si no se encontró información o el usuario eligió actualizar, realizar la consulta a la API
+            Dispatcher.BeginInvoke(
+                    new Action(async () =>
+                    {
+                        await LookupInfo();
+                    }),
+                    DispatcherPriority.Input
             );
         }
 
@@ -145,10 +173,11 @@ namespace SistemaPatentesCIF
         {
             string? json = await PlateLookupApi.LookupPlate(PlateToLookup ?? string.Empty);
 
+            // No se obtuvo respuesta de la API
             if (json == null)
             {
-                MessageBox.Show(
-                    "No se pudo obtener información del vehículo. Por favor, verifique la patente e intente nuevamente.",
+                CustomMessageBox.Show(
+                    "No se pudo obtener respuesta de la API.",
                     "Error de Consulta",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
@@ -156,11 +185,56 @@ namespace SistemaPatentesCIF
                 return;
             }
 
-            ApiInfo apiInfo = JsonSerializer.Deserialize<ApiInfo>(json) ?? new ApiInfo();
-            VehicleInfo = apiInfo.Data ?? new VehicleInfoModel();
-            await AssignValuesToControlsAsync();
-        }
+            ApiInfo apiInfo = JsonSerializer.Deserialize<ApiInfo>(json)
+                    ?? new ApiInfo();
+            
+            // Hay una respuesta de la API
+            if (apiInfo.Success)
+            {
+                // Hubo respuesta exitosa de la API, pero no se encontró información del vehículo
+                if (!apiInfo.Found)
+                {
+                    CustomMessageBox.Show(
+                        "No se encontró información del vehículo para la patente proporcionada.",
+                        "Información No Encontrada",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information
+                        );
+                    return;
+                }
+                else
+                {
+                    // Se encontró información del vehículo, se guarda en la base de datos y se asigna a los controles
+                    VehicleInfoModel model = apiInfo.Data ?? new VehicleInfoModel();
 
+                    VehicleInfo = new VehicleInfoRecord
+                    {
+                        Plate = model.Plate ?? "N/A",
+                        Make = model.Make ?? "N/A",
+                        Model = model.Model ?? "N/A",
+                        Year = model.Year ?? DateTime.Now.Year,
+                        PlateFormat = model.PlateFormat ?? "N/A",
+                        VehicleKind = model.VehicleKind ?? "N/A",
+                        Province = model.CurrentLocation?.Province ?? "N/A",
+                        City = model.CurrentLocation?.City ?? "N/A",
+                        LastLookup = DateTime.Now
+                    };
+                    DataBaseManager.SaveVehicleInfo(VehicleInfo);
+                    await AssignValuesToControlsAsync();
+                }
+            }
+            else
+            {
+                // Hubo un error en la respuesta de la API
+                CustomMessageBox.Show(
+                    "Ocurrió un error al procesar la respuesta de la API.",
+                    "Error de Consulta",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
+        }
+            
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
             Close();
@@ -189,18 +263,17 @@ namespace SistemaPatentesCIF
 
         private async Task AssignValuesToControlsAsync()
         {
-            if (VehicleInfo.HasValue)
+            if (VehicleInfo != null)
             {
-                var v = VehicleInfo.Value;
-                string provinciaFormateada = TextFormatter(v.CurrentLocation?.Province ?? "N/A");
-                string ciudadFormateada = TextFormatter(v.CurrentLocation?.City ?? "N/A");
-
-                TxtPlate.Text = v.Plate ?? "N/A";
-                TxtMake.Text = TextFormatter(v.Make ?? "N/A");
-                TxtModel.Text = TextFormatter(v.Model ?? "N/A");
-                TxtAnio.Text = v.Year?.ToString() ?? "N/A";
-                TxtPlateFormat.Text = PlateFormatter(v.PlateFormat ?? "N/A");
-                TxtVehicleKind.Text = PlateFormatter(v.VehicleKind ?? "N/A");
+                var v = VehicleInfo;
+                string provinciaFormateada = TextFormatter(v.Province);
+                string ciudadFormateada = TextFormatter(v.City);
+                TxtPlate.Text = v.Plate;
+                TxtMake.Text = TextFormatter(v.Make);
+                TxtModel.Text = TextFormatter(v.Model);
+                TxtAnio.Text = v.Year.ToString();
+                TxtPlateFormat.Text = PlateFormatter(v.PlateFormat);
+                TxtVehicleKind.Text = PlateFormatter(v.VehicleKind);
                 TxtProvince.Text = provinciaFormateada;
                 TxtCity.Text = ciudadFormateada;
 
@@ -212,7 +285,7 @@ namespace SistemaPatentesCIF
         {
             if (string.IsNullOrWhiteSpace(TxtSearchPlate.Text))
             {
-                MessageBox.Show(
+                CustomMessageBox.Show(
                     "Por favor, ingrese una patente válida.",
                     "Error de Consulta",
                     MessageBoxButton.OK,
@@ -221,6 +294,34 @@ namespace SistemaPatentesCIF
                 return;
             }
 
+            VehicleInfoRecord? info = DataBaseManager.GetVehicleInfo(TxtSearchPlate.Text.Trim());
+
+            if (info != null)
+            {
+                MessageBoxResult result = CustomMessageBox.Show(
+                    $"Se encontró información en la base de datos para la patente " +
+                    $"{TxtSearchPlate.Text.Trim()} \n" +
+                    $"desea actualizarla?",
+                    "Información Encontrada",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Information
+                );
+
+                if (result == MessageBoxResult.No)
+                {
+                    // El usuario eligió no actualizar, asignar la información existente
+                    VehicleInfo = info;
+                    Dispatcher.BeginInvoke(
+                    new Action(async () =>
+                    {
+                        await AssignValuesToControlsAsync();
+                    }),
+                        DispatcherPriority.Input
+                    );
+                    return;
+                }
+            }
+            
             PlateToLookup = TxtSearchPlate.Text.Trim();
             Dispatcher.BeginInvoke(
                 new Action(async () =>
