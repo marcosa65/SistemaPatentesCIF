@@ -4,6 +4,7 @@ using System.Text;
 
 namespace SistemaPatentesCIF.services
 {
+    using SistemaPatentesCIF.utils;
     using System;
     using System.Diagnostics;
     using System.Net.Http;
@@ -19,10 +20,12 @@ namespace SistemaPatentesCIF.services
         private static readonly HttpClient client = new HttpClient();
         private static string? jsonResult;
 
+        private const string apiKey = "clk_xDLme7-6YGoZr5knHsvcXSAojDNrwc3uLU5cF98Nmyw"; // Reemplazar con tu clave real
+
         public static async Task<string?> LookupPlate(string plate)
         {
             // 1. Reemplazá con tu clave generada en el panel de Clasificar (Llaves API)
-            string apiKey = "clk_xDLme7-6YGoZr5knHsvcXSAojDNrwc3uLU5cF98Nmyw";
+            //string apiKey = "clk_xDLme7-6YGoZr5knHsvcXSAojDNrwc3uLU5cF98Nmyw";
             string patenteAConsultar = plate; // Formato de patente a buscar
 
             try
@@ -34,6 +37,27 @@ namespace SistemaPatentesCIF.services
             {
                 Debug.WriteLine($"Ocurrió un error: {ex.Message}");
                 return null;
+            }
+        }
+
+        public static async Task<bool> IsSiteAvailable()
+        {
+            try
+            {
+                using HttpClient client = new();
+
+                client.Timeout =
+                    TimeSpan.FromSeconds(5);
+
+                HttpResponseMessage response =
+                    await client.GetAsync(
+                        "https://clasific.ar");
+
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
             }
         }
 

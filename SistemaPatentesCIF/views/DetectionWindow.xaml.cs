@@ -187,7 +187,7 @@ namespace SistemaPatentesCIF.views
                 string imagePath = selectFileDialog.FileName;
                 if (!File.Exists(imagePath))
                 {
-                    MessageBox.Show(
+                    CustomMessageBox.Show(
                         "Error con la seleccion de imagen.",
                         "Error",
                         MessageBoxButton.OK,
@@ -259,7 +259,7 @@ namespace SistemaPatentesCIF.views
                 }
                 else
                 {
-                    MessageBox.Show(
+                    CustomMessageBox.Show(
                         "No fue posible detectar placas \nen la imagen aportada.",
                         "Atencion!",
                         MessageBoxButton.OK,
@@ -273,7 +273,7 @@ namespace SistemaPatentesCIF.views
             }
             else
             {
-                MessageBox.Show(
+                CustomMessageBox.Show(
                     "No se seleccionó ninguna imagen.",
                     "Información",
                     MessageBoxButton.OK,
@@ -343,7 +343,7 @@ namespace SistemaPatentesCIF.views
             }
             else
             {
-                MessageBox.Show(
+                CustomMessageBox.Show(
                     "Seleccione un numero de patente de la tabla\n"
                         + "para obtener información del vehículo.",
                     "Información",

@@ -1,7 +1,8 @@
-﻿using System.Windows;
-using SistemaPatentesCIF.data;
-using SistemaPatentesCIF.themes;
+﻿using SistemaPatentesCIF.data;
+using SistemaPatentesCIF.services;
 using SistemaPatentesCIF.views;
+using System.Windows;
+using System.Windows.Media;
 
 namespace SistemaPatentesCIF
 {
@@ -17,10 +18,12 @@ namespace SistemaPatentesCIF
             this.ContentRendered += Window_ContentRendered;
         }
 
-        private void Window_Loaded(object? sender, EventArgs e)
+        private async void Window_Loaded(object? sender, EventArgs e)
         {
             // Codigo que se ejecuta cuando la ventana se carga, previamente a que se renderice completamente
             // Todos los controles (TextBox, DataGrid, etc.) ya están cargados
+            GetAPIStatus();
+
         }
 
         private void Window_ContentRendered(object? sender, EventArgs e)
@@ -29,13 +32,27 @@ namespace SistemaPatentesCIF
             LastDetectionTime.Text =
                 DataBaseManager.GetLastDetection()?.DetectionDate.ToString("g")
                 ?? "No hay detecciones";
-            //CustomMessageBox.Show(
-            //    "Bienvenido al Sistema de Patentes CIF",
-            //    "Sistema de Patentes CIF",
-            //    MessageBoxButton.OK,
-            //    MessageBoxImage.Exclamation
-            //);
         }
+
+        private async void GetAPIStatus()
+        {
+            ApiDomainStatus.Text = "● Comprobando..";
+            ApiDomainStatus.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC107")); // Color amarillo
+            await Task.Delay(1000); // Simular retraso en la comprobación
+            bool online = await PlateLookupApi.IsSiteAvailable();
+            if (online)
+            {
+                ApiDomainStatus.Text = "● Disponible";
+                ApiDomainStatus.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4CAF50")); // Color verde
+            }
+            else
+            {
+                ApiDomainStatus.Text = "● No disponible";
+                ApiDomainStatus.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F44336")); // Color rojo
+            }
+        }
+
+
 
         private void HistoryButton_Click(object sender, RoutedEventArgs e)
         {

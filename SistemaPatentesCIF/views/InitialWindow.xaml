@@ -186,11 +186,15 @@
 
         <StackPanel Grid.Column="1" HorizontalAlignment="Center">
           <TextBlock
-            Text="API Vehicular"
+            Text="Dominio API"
             Foreground="{DynamicResource TextSecondaryBrush}"
             FontSize="12"
           />
-          <TextBlock Text="● Disponible" Foreground="#4CAF50" FontWeight="Bold" Margin="0,2,0,0" />
+          <TextBlock x:Name ="ApiDomainStatus"
+                     Text="● Disponible" 
+                     Foreground="#4CAF50" 
+                     FontWeight="Bold" 
+                     Margin="0,2,0,0" />
         </StackPanel>
 
         <StackPanel Grid.Column="2" HorizontalAlignment="Center">

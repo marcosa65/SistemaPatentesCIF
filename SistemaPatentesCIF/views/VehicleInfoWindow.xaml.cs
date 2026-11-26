@@ -1,4 +1,15 @@
-﻿using BruTile.Predefined;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using BruTile.Predefined;
 using BruTile.Web;
 using Mapsui;
 using Mapsui.Layers;
@@ -12,17 +23,6 @@ using SistemaPatentesCIF.data;
 using SistemaPatentesCIF.models;
 using SistemaPatentesCIF.services;
 using SistemaPatentesCIF.views;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
-using System.Globalization;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
 namespace SistemaPatentesCIF
 {
@@ -35,13 +35,10 @@ namespace SistemaPatentesCIF
         private MemoryLayer? _markerLayer;
 
         private const string UserAgent = "SistemaPatentesCIF_Formosa/1.0";
-        
+
         private static readonly HttpClient _httpClient = new HttpClient
         {
-            DefaultRequestHeaders =
-            {
-                { "User-Agent", UserAgent }
-            }
+            DefaultRequestHeaders = { { "User-Agent", UserAgent } },
         };
 
         private static readonly Dictionary<string, (double Lat, double Lon)> _cacheCoordenadas =
@@ -57,15 +54,14 @@ namespace SistemaPatentesCIF
         {
             if (string.IsNullOrWhiteSpace(PlateToLookup))
                 return;
-            
-            VehicleInfoRecord? info =
-                DataBaseManager.GetVehicleInfo(PlateToLookup);
+
+            VehicleInfoRecord? info = DataBaseManager.GetVehicleInfo(PlateToLookup);
 
             if (info != null)
             {
                 MessageBoxResult result = CustomMessageBox.Show(
-                    $"Se encontró información en la base de datos para la patente {PlateToLookup} \n" +
-                    $"desea actualizarla?",
+                    $"Se encontró información en la base de datos para la patente {PlateToLookup} \n"
+                        + $"desea actualizarla?",
                     "Información Encontrada",
                     MessageBoxButton.OKCancel,
                     MessageBoxImage.Information
@@ -75,28 +71,29 @@ namespace SistemaPatentesCIF
                     // El usuario eligió no actualizar, asignar la información existente
                     VehicleInfo = info;
                     Dispatcher.BeginInvoke(
-                    new Action(async () =>
-                    {
-                        await AssignValuesToControlsAsync();
-                    }),
+                        new Action(async () =>
+                        {
+                            await AssignValuesToControlsAsync();
+                        }),
                         DispatcherPriority.Input
                     );
                     return;
-                } 
+                }
             }
             // Si no se encontró información o el usuario eligió actualizar, realizar la consulta a la API
             Dispatcher.BeginInvoke(
-                    new Action(async () =>
-                    {
-                        await LookupInfo();
-                    }),
-                    DispatcherPriority.Input
+                new Action(async () =>
+                {
+                    await LookupInfo();
+                }),
+                DispatcherPriority.Input
             );
         }
 
         private void InitializeMap()
         {
-            if (MapControl.Map == null) return;
+            if (MapControl.Map == null)
+                return;
 
             LoggingWidget.ShowLoggingInMap = ActiveMode.No;
             MapControl.Map.Widgets.Clear();
@@ -105,7 +102,8 @@ namespace SistemaPatentesCIF
             string host = "server" + "." + "arcgisonline" + "." + "com";
 
             // 1. Capa base oscura (calles y relieve)
-            string basePath = "/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}";
+            string basePath =
+                "/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}";
             var darkTileSource = new HttpTileSource(
                 new GlobalSphericalMercator(),
                 "https://" + host + basePath,
@@ -113,20 +111,27 @@ namespace SistemaPatentesCIF
                 attribution: new BruTile.Attribution("© Esri, OpenStreetMap contributors"),
                 configureHttpRequestMessage: (request) =>
                 {
-                    request.Headers.TryAddWithoutValidation("User-Agent", "SistemaPatentesCIF_Formosa/1.0");
+                    request.Headers.TryAddWithoutValidation(
+                        "User-Agent",
+                        "SistemaPatentesCIF_Formosa/1.0"
+                    );
                 }
             );
             MapControl.Map.Layers.Add(new TileLayer(darkTileSource));
 
             // 2. Capa transparente superior con nombres de ciudades, barrios y rutas
-            string refPath = "/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}";
+            string refPath =
+                "/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}";
             var refTileSource = new HttpTileSource(
                 new GlobalSphericalMercator(),
                 "https://" + host + refPath,
                 name: "Esri Dark Gray Labels",
                 configureHttpRequestMessage: (request) =>
                 {
-                    request.Headers.TryAddWithoutValidation("User-Agent", "SistemaPatentesCIF_Formosa/1.0");
+                    request.Headers.TryAddWithoutValidation(
+                        "User-Agent",
+                        "SistemaPatentesCIF_Formosa/1.0"
+                    );
                 }
             );
             MapControl.Map.Layers.Add(new TileLayer(refTileSource));
@@ -142,8 +147,8 @@ namespace SistemaPatentesCIF
                 {
                     SymbolScale = 0.9,
                     Fill = new Brush(Color.FromString("#F59E0B")),
-                    Outline = new Pen(Color.White, 2)
-                }
+                    Outline = new Pen(Color.White, 2),
+                },
             };
             MapControl.Map.Layers.Add(_markerLayer);
 
@@ -153,7 +158,8 @@ namespace SistemaPatentesCIF
 
         private void MoveMapToCoordinates(double lat, double lon, int zoom, bool showPin)
         {
-            if (MapControl.Map == null || _markerLayer == null) return;
+            if (MapControl.Map == null || _markerLayer == null)
+                return;
 
             var (x, y) = SphericalMercator.FromLonLat(lon, lat);
             var point = new MPoint(x, y);
@@ -185,9 +191,8 @@ namespace SistemaPatentesCIF
                 return;
             }
 
-            ApiInfo apiInfo = JsonSerializer.Deserialize<ApiInfo>(json)
-                    ?? new ApiInfo();
-            
+            ApiInfo apiInfo = JsonSerializer.Deserialize<ApiInfo>(json) ?? new ApiInfo();
+
             // Hay una respuesta de la API
             if (apiInfo.Success)
             {
@@ -199,7 +204,7 @@ namespace SistemaPatentesCIF
                         "Información No Encontrada",
                         MessageBoxButton.OK,
                         MessageBoxImage.Information
-                        );
+                    );
                     return;
                 }
                 else
@@ -217,7 +222,7 @@ namespace SistemaPatentesCIF
                         VehicleKind = model.VehicleKind ?? "N/A",
                         Province = model.CurrentLocation?.Province ?? "N/A",
                         City = model.CurrentLocation?.City ?? "N/A",
-                        LastLookup = DateTime.Now
+                        LastLookup = DateTime.Now,
                     };
                     DataBaseManager.SaveVehicleInfo(VehicleInfo);
                     await AssignValuesToControlsAsync();
@@ -234,7 +239,7 @@ namespace SistemaPatentesCIF
                 );
             }
         }
-            
+
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
             Close();
@@ -277,7 +282,11 @@ namespace SistemaPatentesCIF
                 TxtProvince.Text = provinciaFormateada;
                 TxtCity.Text = ciudadFormateada;
 
-                await SetMapByProvinceAndCityAsync("Argentina", provinciaFormateada, ciudadFormateada);
+                await SetMapByProvinceAndCityAsync(
+                    "Argentina",
+                    provinciaFormateada,
+                    ciudadFormateada
+                );
             }
         }
 
@@ -299,9 +308,9 @@ namespace SistemaPatentesCIF
             if (info != null)
             {
                 MessageBoxResult result = CustomMessageBox.Show(
-                    $"Se encontró información en la base de datos para la patente " +
-                    $"{TxtSearchPlate.Text.Trim()} \n" +
-                    $"desea actualizarla?",
+                    $"Se encontró información en la base de datos para la patente "
+                        + $"{TxtSearchPlate.Text.Trim()} \n"
+                        + $"desea actualizarla?",
                     "Información Encontrada",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Information
@@ -312,16 +321,16 @@ namespace SistemaPatentesCIF
                     // El usuario eligió no actualizar, asignar la información existente
                     VehicleInfo = info;
                     Dispatcher.BeginInvoke(
-                    new Action(async () =>
-                    {
-                        await AssignValuesToControlsAsync();
-                    }),
+                        new Action(async () =>
+                        {
+                            await AssignValuesToControlsAsync();
+                        }),
                         DispatcherPriority.Input
                     );
                     return;
                 }
             }
-            
+
             PlateToLookup = TxtSearchPlate.Text.Trim();
             Dispatcher.BeginInvoke(
                 new Action(async () =>
@@ -332,7 +341,11 @@ namespace SistemaPatentesCIF
             );
         }
 
-        private async Task SetMapByProvinceAndCityAsync(string pais, string provincia, string ciudad)
+        private async Task SetMapByProvinceAndCityAsync(
+            string pais,
+            string provincia,
+            string ciudad
+        )
         {
             if (provincia == "N/A" && ciudad == "N/A")
             {
@@ -356,7 +369,11 @@ namespace SistemaPatentesCIF
             }
         }
 
-        private async Task<(double Lat, double Lon)?> GeocodeLocationAsync(string pais, string provincia, string ciudad)
+        private async Task<(double Lat, double Lon)?> GeocodeLocationAsync(
+            string pais,
+            string provincia,
+            string ciudad
+        )
         {
             string cacheKey = $"{ciudad}|{provincia}|{pais}";
             if (_cacheCoordenadas.TryGetValue(cacheKey, out var cached))
@@ -369,15 +386,28 @@ namespace SistemaPatentesCIF
                     : $"{ciudad}, {provincia}, {pais}";
 
                 string geoHost = "nominatim" + "." + "openstreetmap" + "." + "org";
-                string url = $"https://{geoHost}/search?q={Uri.EscapeDataString(queryText)}&format=json&limit=1";
+                string url =
+                    $"https://{geoHost}/search?q={Uri.EscapeDataString(queryText)}&format=json&limit=1";
                 string json = await _httpClient.GetStringAsync(url);
 
                 using JsonDocument doc = JsonDocument.Parse(json);
                 if (doc.RootElement.GetArrayLength() > 0)
                 {
                     var first = doc.RootElement[0];
-                    if (double.TryParse(first.GetProperty("lat").GetString(), NumberStyles.Any, CultureInfo.InvariantCulture, out double lat) &&
-                        double.TryParse(first.GetProperty("lon").GetString(), NumberStyles.Any, CultureInfo.InvariantCulture, out double lon))
+                    if (
+                        double.TryParse(
+                            first.GetProperty("lat").GetString(),
+                            NumberStyles.Any,
+                            CultureInfo.InvariantCulture,
+                            out double lat
+                        )
+                        && double.TryParse(
+                            first.GetProperty("lon").GetString(),
+                            NumberStyles.Any,
+                            CultureInfo.InvariantCulture,
+                            out double lon
+                        )
+                    )
                     {
                         _cacheCoordenadas[cacheKey] = (lat, lon);
                         return (lat, lon);
@@ -397,6 +427,5 @@ namespace SistemaPatentesCIF
 
             return null;
         }
-
     }
 }

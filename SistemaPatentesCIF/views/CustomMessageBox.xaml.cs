@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -34,7 +33,6 @@ namespace SistemaPatentesCIF.views
                     BtnClose_Click(this, new RoutedEventArgs());
                 }
             };
-
         }
 
         public static MessageBoxResult Show(
@@ -80,7 +78,7 @@ namespace SistemaPatentesCIF.views
             switch (buttons)
             {
                 case MessageBoxButton.OKCancel:
-                    BtnPrimary.Content = "Aceptar";
+                    BtnPrimary.Content = "Ok";
                     BtnSecondary.Content = "Cancelar";
                     BtnSecondary.Visibility = Visibility.Visible;
                     break;
@@ -92,7 +90,7 @@ namespace SistemaPatentesCIF.views
                     break;
 
                 default:
-                    BtnPrimary.Content = "Aceptar";
+                    BtnPrimary.Content = "Ok";
                     BtnSecondary.Visibility = Visibility.Collapsed;
                     break;
             }
